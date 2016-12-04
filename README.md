@@ -1,0 +1,1 @@
+This repository is used for storing the reading notes on *Machine Learning*.
