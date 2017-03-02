@@ -1,0 +1,280 @@
+\chapter{聚类}
+% # 【《机器学习》第9章】聚类
+
+\section{聚类任务}
+% ## 9.1 聚类任务
+
+无监督学习的目标是通过学习未标记样本来发现样本间的内在规律,为进一步的数据分析提供基础.聚类是无监督学习中研究最多,应用最广的任务.聚类既能作为一个单独过程,研究数据内在规律,也可为后续的分析过程提供数据支撑.
+
+\section{性能度量}
+% ## 9.2 性能度量
+
+与有监督学习过程一样,聚类也需要一个性能度量指标来度量其学习效果的好坏.从直观上看,一个好的聚类模型应该使属性相似的样本归到一簇中去,并且簇与簇之间的差别应该尽可能大,即簇内相似度高且簇间相似度低.
+通常度量聚类性能的方法有两类,一类是与某个参考模型作对比,称为外部指标,另一类是直接考察聚类结果而不与任何参考模型作对比,称为内部指标.
+
+\subsection*{外部指标}
+% ### 外部指标
+
+首先定义数据集$D=\{\mathbf{x_1, x_2, \dots, x_m}\}$,聚类给出的簇划分为$C=\{C_1, C_2, \dots, C_k\}$,参考模型给出的簇划分为$C^\ast=\{C_1^\ast, C_2^\ast, \dots, C_s^\ast\}$.令$\lambda$与$\lambda^\ast$分别对应聚类与参考模型的标记向量.定义
+\begin{equation}
+a=|SS|, SS=\{(\mathbf{x_i, x_j})|\lambda_i=\lambda_j, \lambda_i^\ast=\lambda_j^\ast, i<j\}
+\end{equation}
+\begin{equation}
+b=|SD|, SD=\{(\mathbf{x_i, x_j})|\lambda_i=\lambda_j, \lambda_i^\ast\ne \lambda_j^\ast, i<j\}
+\end{equation}
+\begin{equation}
+c=|DS|, DS=\{(\mathbf{x_i, x_j})|\lambda_i\ne\lambda_j, \lambda_i^\ast=\lambda_j^\ast, i<j\}
+\end{equation}
+\begin{equation}
+d=|DD|, DD=\{(\mathbf{x_i, x_j})|\lambda_i\ne\lambda_j, \lambda_i^\ast\ne\lambda_j^\ast, i<j\}
+\end{equation}
+由于$i<j$且每个样本$(\mathbf{x_i, x_j})$仅能出现在一个集合中,则有
+\begin{equation}
+a+b+c+d=m(m-1)/2
+\end{equation}
+基于以上,常见外部指标有
+\begin{itemize}
+\item Jaccard系数, Jaccard Coefficient, 简称JC
+    \begin{equation}
+    JC=\frac{a}{a+b+c}
+    \end{equation}
+\item FM指数, Fowlkes and Mallows Index, 简称FMI
+    \begin{equation}
+    FMI=\sqrt{\frac{a}{a+b}\cdot\frac{a}{a+c}}
+    \end{equation}
+\item Rand指数, Rand Index, 简称RI
+    \begin{equation}
+    RI=\frac{2(a+d)}{m(m-1)}
+    \end{equation}
+\end{itemize}
+以上结果值区间在$[0,1]$之间,越大越好
+
+\subsection*{内部指标}
+% ### 内部指标
+
+考虑聚类结果簇划分$C=\{C_1, C_2, \dots, C_k\}$,定义
+\begin{equation}
+avg(C)=\frac{2}{|C|(|C|-1)}\sum_{1\le i<j\le |C|}dist(\mathbf{x_i,x_j})
+\end{equation}
+\begin{equation}
+diam(C)=\max_{1\le i<j\le |C|}dist(\mathbf{x_i,x_j})
+\end{equation}
+\begin{equation}
+d_{min}(C_i,C_j)=\min_{\mathbf{x_i}\in C_i, \mathbf{x_j} \ in C_j}dist(\mathbf{x_i, x_j})
+\end{equation}
+\begin{equation}
+d_{cen}(C_i, C_j)=dist(\mathbf{\mu_i, \mu_j})
+\end{equation}
+
+$avg(C)$:簇内样本间平均距离
+$diam(C)$:簇内样本间最远距离
+$d_{min}(C_i, C_j)$:簇$C_i$与簇$C_j$间最近样本距离
+$d_{cen}(C_i, C_j)$:簇$C_i$与簇$C_j$中心点间距离
+根据以上定义,常见内部指标有
+\begin{itemize}
+\item DB指数, Davis-Bouldin Inex, DBI
+    \begin{equation}
+    DBI=\frac{1}{k}\max_{j\ne i}\Big(\frac{avg(C_i)+avg(C_j)}{d_{cen}(\mu_i,\mu_j)}\Big)
+    \end{equation}
+\item Dunn指数, Dunn Index, DI
+    \begin{equation}
+    DI=\min_{1\le i \le k}\Big\{\min_{j\ne i}\Big(\frac{d_{min}(C_i,C_j)}{\max_{1\le l \le k}diam(C_l)}\Big)\Big\}
+    \end{equation}
+\end{itemize}
+DBI越小越好,DI越大越好
+
+\section{距离计算}
+% ## 9.3 距离计算
+
+函数$dist(\cdot, \cdot)$是一个距离度量,需要满足下述属性:
+\begin{itemize}
+\item 非负性: $dist(\mathbf{x_i,x_j})\ge0$
+\item 同一性: $dist(\mathbf{x_i,x_j})=0$当且仅当$\mathbf{x_i=x_j}$
+\item 对称性: $dist(\mathbf{x_i,x_j})=dist(\mathbf{x_j,x_i})$
+\item 直递性: $dist(\mathbf{x_i,x_j}) \le dist(\mathbf{x_i,x_k}) + dist(\mathbf{x_k,x_j})$
+\end{itemize}
+
+通常我们将属性划分为连续属性与离散属性,但是在距离计算时,序的关系更为重要.区分有序属性与无序属性的标准是能否直接在属性值上计算距离.
+
+\subsection*{有序属性}
+% ### 有序属性
+
+给定样本$\mathbf{x_i}=\{x_{i1},x_{i2},\dots,x_{in}\}$与$\mathbf{x_j}=\{x_{j1},x_{j2},\dots,x_{jn}\}$,常见距离定义有:
+\begin{itemize}
+\item 闵可夫斯基距离, Minkowski Distance
+    \begin{equation}
+    dist_{mk}=\Big(\sum_{u=1}^n|x_{iu}-x_{ju}|^p\Big)^{\frac{1}{p}}
+    \end{equation}
+对于$p=1$和$p=2$,分别有特例
+\item 欧氏距离, Euclidean Distance
+    \begin{equation}
+    dist_{ed}(\mathbf{x_i, x_j})=\|\mathbf(x_i-x_j)\|_2=\sqrt{\sum_{u=1}^n|x_{iu}-x_{ju}|^2}
+    \end{equation}
+\item 曼哈顿距离, Manhattan Distance
+    \begin{equation}
+    dist_{man}(\mathbf{x_i, x_j})=\|\mathbf(x_i-x_j)\|_1=\sum_{u=1}^n|x_{iu}-x_{ju}|
+    \end{equation}
+\item 如果不同属性重要程度不同,有
+    \begin{equation}
+    dist_{wmk}=\Big(w_1|x_{i1}-x_{j1}|^p+\dots+w_n|x_{in}-x_{jn}|^p\Big)^{\frac{1}{p}}
+    \end{equation}
+\end{itemize}
+
+\subsection*{无序属性}
+% ### 无序属性
+
+\begin{itemize}
+\item VDM, Value Difference Metric\\
+令$m_{u,a}$表示属性$u$上取值为$a$的样本数,$m_{u,a,i}$表示在第$i$个样本簇中,在第$u$个属性上取值为$a$的样本数,则在属性$u$上两个离散值$a$与$b$的VDM值为
+    \begin{equation}
+    VDM_p(a,b)=\sum_{i=1}^k|\frac{m_{u,a,i}}{m_{u,a}}-\frac{m_{u,b,i}}{m_{u,b}}|^p
+    \end{equation}
+\end{itemize}
+
+\subsection*{混合属性}
+% ### 混合属性
+
+以闵可夫斯基距离和VDM距离结合为例
+\begin{equation}
+MinkovVDM_p(\mathbf{x_i,x_j})=\Big(\sum_{u=1}^{n_c}|x_{iu}-x_{ju}|^p+\sum_{u=n_c+1}^nVDM_p(x_{iu},x_{ju})\Big)^{\frac{1}{p}}
+\end{equation}
+
+在现实任务中,有必要基于数据样本来确定合适的距离公式,这可以通过距离度量学习(distance metric learning)来实现.
+
+\section{原型聚类}
+% ## 9.4 原型聚类
+
+此类聚类假设聚类结构能够通过一组原型来刻画.
+
+\subsection{k均值算法}
+% ### 9.4.1 k均值算法
+
+k均值算法针对聚类所得簇最小化平均误差作为优化目标
+\begin{equation}
+E=\sum_{i=1}^k\sum_{\mathbf{x}\in C_i}\|\mathbf{x-\mu_i}\|_2^2
+\end{equation}
+其中,$\mu_i$是$C_i$簇的均值向量.
+上式是一个NP难的问题,常采用贪心算法求解出次优值.
+
+算法描述:
+\begin{enumerate}
+\item 随机初始化聚类中心
+\item 选取每个样本,计算每个样本与簇中心距离,归到距离最短簇中
+\item 更新簇中心位置
+\item 重复以上步骤,并判断是否达到迭代标准(次数,簇中心位移)
+\end{enumerate}
+
+\subsection{学习向量量化}
+% ### 9.4.2 学习向量量化
+
+本节学习的内容从最后的距离来看较为简单,但是如果从本节开头的定义以及之后的推导过程来看则相对复杂难以理解.因此有必要对本节开头的定义作补充说明:
+\begin{enumerate}
+\item 样本集$D=\{(\mathbf{x_1}, y_1), \mathbf{x_2}, y_2), \dots, \mathbf{x_m}, y_m)\}$,每个样本$\mathbf{x_i}$是由$n$个样本属性$(x_{i1},x_{i2},\dots,x_{in})$描述的特征向量,$y_i\in\mathcal{y}$是样本$x_i$对应的类别标记.
+\item LVQ的目标是学习一组$n$维原型向量$\{\mathbf{p_1,p_2,\dots,p_q}\}$,每个原型向量代表一个聚类簇.
+\end{enumerate}
+注:
+\begin{enumerate}
+\item 原型向量与k均值聚类中的聚类中心概念比较接近
+\item 簇标记与类别标记的概念并不等价,一个类别标记可能对应多个簇标记,即多个簇可能对应一个类别.
+\end{enumerate}
+
+算法描述:
+\begin{enumerate}
+\item 原型向量初始化.对于第$q$个簇,可以从类别标记为$t_q$的样本中随机选取一个座位原型向量;
+\item 便利样本,计算每个样本与原型向量距离,并确定与之距离最近的原型向量$\mathbf{p_{i^\ast}}$.若$\mathbf{x_j}$与$\mathbf{p_{i^\ast}}$类别相同,则$\mathbf{p_{i^\ast}}$向$\mathbf{x_j}$方向靠拢,否则$\mathbf{p_{i^\ast}}$远离$\mathbf{x_j}$的方向.
+\end{enumerate}
+注:$\mathbf{p_{i^\ast}}$向$\mathbf{x_j}$方向靠拢公式推导过程
+\begin{equation}
+\mathbf{p'}=\mathbf{p_{i^\ast}}+\eta(\mathbf{x_j-p_{i^\ast}})
+\end{equation}
+\begin{equation}\begin{split}
+\|\mathbf{p'-x_j}\|_2&=\|\mathbf{p_{i^\ast}}+\eta(\mathbf{x_j-p_{i^\ast}})-\mathbf{x_j}\|_2\\
+&=(1-\eta)\|\mathbf{p_{i^\ast}-x_j}\|_2
+\end{split}\end{equation}
+
+\subsection{高斯混合聚类}
+% ### 9.4.3 高斯混合聚类
+
+高斯混合聚类采用概率分布作为聚类原型,因此为了能够理解高斯混合聚类,必须放下之前的比较直观的k均值聚类与LVQ.高斯混合聚类首先初始化初始高斯分布,然后计算各个样本在各个高斯混合分布成分上的后验概率,之后根据这个后验概率更新高斯分布参数.重复上述过程并确定样本的簇标记.
+首先定义
+\begin{itemize}
+\item $n$维高斯分布
+    \begin{equation}
+    p(\mathbf{x})=\frac{1}{(2\pi)^{\frac{n}{2}}|\Sigma|^{\frac{1}{2}}}e^{-\frac{1}{2}(\mathbf{x-\mu})^T\Sigma^{-1}(\mathbf{x-\mu})}
+    \end{equation}
+其中
+$\mu$:$n$维均值向量
+$\Sigma$:$n\times n$维协方差矩阵
+\item 高斯混合分布
+    \begin{equation}
+    p_M(\mathbf{x})=\sum_{i=1}^k\alpha_ip(\mathbf{x}|\mu_i,\Sigma_i)
+    \end{equation}
+\end{itemize}
+
+算法描述:
+\begin{enumerate}
+\item (E步)假设$D=\{(\mathbf{x_1}, y_1), \mathbf{x_2}, y_2), \dots, \mathbf{x_m}, y_m)\}$由上述过程生成,令$z_j\in\{1,2,\dots,k\}$表示生成样本$x_j$的高斯混合成分,显然$z_j$的先验概率对应于$\alpha_i$,后验概率对应于
+    \begin{equation}\begin{split}
+    p_M(z_j=i|\mathbf{x_j})&=\frac{p(z_j=1)\cdot p_M(\mathbf{x_j}|z_j=i)}{p_M(\mathbf{x_j})}\\&=\frac{\alpha_ip(\mathbf{x_i}|\mu_i,\Sigma_i)}{\sum_{l=1}^{k}\alpha_ip(\mathbf{x_j}|\mu_l,\Sigma_l)}
+    \end{split}\end{equation}
+上式给出了$x_j$由第$i$个高斯混合成分生成的后验概率
+记$p_M(z_j=i|\mathbf{x_j})=\gamma_{ji}$则簇标记$\lambda=\arg\max_{i\in \{1,2,\dots,k\}}\gamma_{ji}$
+\item (M步)
+模型参数如何更新?采用极大化似然估计.
+    \begin{equation}
+    LL(D)=\ln\Big(\prod_{j=1}^mp_M(\mathbf{x_j})\Big)=\sum_{j=1}^m\ln\Big(\sum_{i=1}^n\alpha_ip(\mathbf{x_j}|\mu_i,\Sigma_i)\Big)
+    \end{equation}
+由$\frac{\partial LL(D)}{\partial \mu_i}=0$有,$\mu_i=\frac{\sum_{j=1}^m\gamma_{ji}\mathbf{x_j}}{\sum_{j=1}^m\gamma_{ji}}$.
+由$\frac{\partial LL(D)}{\Sigma_i}=0$有,$\Sigma_i=\frac{\sum_{j=1}^m\gamma_{ji}(\mathbf{x_j-\mu_i})(\mathbf{x_j-\mu_i})^T}{\sum_{j=1}^m\gamma_{ji}}$
+对于$\alpha_i$,除了最大化$LL(D)$,还要满足$\alpha_i\ge 0, \sum_{i=1}^k\alpha_i=1$
+对$LL(D)+\lambda(\sum_{i=1}^k\alpha_i-1)$求$\alpha_i$求偏导,有
+    \begin{equation}
+    \sum_{j=1}^m\frac{p(\mathbf{x_j}|\mu_i,\Sigma_i)}{\sum_{l=1}^k\alpha_lp(\mathbf{x_j}|\mu_l,\Sigma_l)}+\lambda=0
+    \end{equation}
+得$\alpha_i=\frac{1}{m}\sum_{j=1}^m\gamma_{ji}$.
+\end{enumerate}
+
+\section{密度聚类(DBSCAN)}
+% ## 9.5 密度聚类(DBSCAN)
+
+顾名思义,密度聚类是指根据样本分布的密度来对样本进行聚类.但是,如何定义样本的稠密程度,如何根据样本分布稠密程度对样本簇进行划分是密度聚类要明确的定义.基于此,需要明确以下定义:
+\begin{itemize}
+\item $\epsilon$-邻域对$\mathbf{x_j}\in D$,其$\epsilon$-邻域包含样本集$D$中与$\mathbf{x_j}$的距离不大于$\epsilon$的样本,即$N_{\epsilon}(\mathbf{x_j})=\{\mathbf{x_j}\in D|dist(\mathbf{x_i,x_j})\le\epsilon\}$
+\item 核心对象(core object)若$\mathbf{x_j}$的$\epsilon$邻域至少包含$MinPts$个样本,即$|N_{\epsilon}(\mathbf{x_j})|\ge MinPts$,则$\mathbf{x_j}$是一个核心对象.
+\item 密度直达(directly density-reachable)若$\mathbf{x_j}$位于$\mathbf{x_i}$的$\epsilon$-邻域中,且$\mathbf{x_i}$是核心对象,则称$\mathbf{x_j}$由$\mathbf{x_i}$密度直达.
+\item 密度可达(density-reachable)对$\mathbf{x_i}$与$\mathbf{x_j}$,若存在序列样本$\mathbf{p_1,p_2,\dots,p_n}$,其中$\mathbf{p_1=x_1,p_n=x_j}$,且$\mathbf{p_{i+1}}$由$\mathbf{p_{i}}$密度直达,则称$\mathbf{x_j}$由$\mathbf{x_i}$密度可达.
+\item 密度相连(density-connected)对$\mathbf{x_i}$与$\mathbf{x_j}$,若存在$\mathbf{x_k}$使得$\mathbf{x_i}$与$\mathbf{x_j}$均可由$\mathbf{x_k}$密度可达,则称$\mathbf{x_i}$与$\mathbf{x_j}$密度相连.
+\end{itemize}
+
+基于以上定义,簇的定义为,由密度可达关系导出的最大的样本相连密度集合.形式化地说,给定邻域参数$(\epsilon,MinPts)$,簇$C\subseteq D$是满足以下性质的非空样本子集:
+\begin{itemize}
+\item 连接性:$\mathbf{x_i}\in C, \mathbf{x_j}\in C\Rightarrow\mathbf{x_i}$与$\mathbf{x_j}$密度相连
+\item 最大性:$\mathbf{x_i}\in C, \mathbf{x_j}$由$\mathbf{x_i}$密度可达$\Rightarrow\mathbf{x_j}\in C$
+\end{itemize}
+
+算法描述
+\begin{enumerate}
+\item 找出数据集中所有的核心对象
+\item 以任意核心对象为出发点,找出由其密度可达的样本生成簇
+\item 遍历所有的核心对象,直至所有核心对象均被访问过为止
+\end{enumerate}
+
+\section{层次聚类(AGNES)}
+% ## 9.6 层次聚类(AGNES)
+
+层次聚类试图在不同层次对数据进行划分,从而形成树形的聚类结构.数据集的划分可采用"自底向上"的聚合策略,也可采用"自顶向下"的分拆策略.
+AGNES算法首先将每个样本看做一个初始聚类簇,然后在算法进行的每一步中找出距离最近的两个聚类簇进行合并,该过程不断重复,直至达到预设的聚类簇个数.
+
+聚类簇距离定义:
+\begin{itemize}
+\item 最小距离 $d_{min}(C_i,C_j)=\min_{\mathbf{x}\in C_i, \mathbf{z}\in C_j}dist(\mathbf{x,z})$
+\item 最大距离 $d_{max}(C_i,C_j)=\max_{\mathbf{x}\in C_i, \mathbf{z}\in C_j}dist(\mathbf{x,z})$
+\item 平均距离 $d_{avg}(C_i,C_j)=\frac{1}{|C_i||C_j|}\sum_{\mathbf{x}\in C_i}\sum_{\mathbf{z}\in C_j}dist(\mathbf{x,z})$
+\end{itemize}
+
+使用不同的聚类簇距离定义,算法的名称也不相同:
+\begin{itemize}
+\item $d_{min}$单链接 single-linkage
+\item $d_{max}$全链接 complete-linkage
+\item $d_{avg}$均链接 average-linkage
+\end{itemize}
