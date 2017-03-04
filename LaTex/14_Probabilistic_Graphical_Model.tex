@@ -1,0 +1,220 @@
+\chapter{概率图模型}
+% # 【《机器学习》第14章】概率图模型
+
+本章简要介绍了概率图模型的体系,为了便于理解本章内容,需要首先明确以下几个概念:
+\begin{itemize}
+\item 概率模型:提供了一种描述框架,将学习任务归结为计算变量的概率分布.
+\item 推断:利用已知变量推测出未知变量分布.
+\end{itemize}
+
+假设关心变量集合为Y,可观测变量集合为O,其他变量集合为R."生成式"(generative)模型考虑$P(Y,R,O)$;"判别式"(discriminative)模型考虑条件分布$P(Y,R|O)$.给定一组观测变量值,\textbf{推断就是要由$P(Y,R,O)$或者$P(Y,R|O)$得到条件概率分布$P(Y|O)$}.
+
+利用概率求和规则直接消去变量$R$复杂度太高,显然不可行.此外,属性变量间还存在着复杂的联系.概率图模型(Probabilistic Graphical Model)正是用图来表达变量相关关系的概率模型.概率图模型可以分为两类:
+\begin{itemize}
+\item 有向图模型或者贝叶斯网:使用有向无环图表示变量间的依赖关系.
+\item 无向图模型或者马尔可夫网:使用无向图表示变量间的相关关系.
+\end{itemize}
+
+\section{隐马尔可夫模型(有向图模型,生成式模型)}
+% ## 14.1 隐马尔可夫模型(有向图模型,生成式模型)
+
+隐马尔可夫模型(Hidden Markov Mode)是\textit{结构最简单的动态贝叶斯网}.
+
+隐马尔可夫模型中状态分为两组:
+\begin{itemize}
+\item 状态变量(隐变量)$\{y_1,y_2,\dots,y_n\}$,其中$y_i\in\mathcal Y$表示第$i$时刻系统的状态;
+\item 观测变量$\{x_1,x_2,\dots,x_n\}$,其中$x_i\in\mathcal X$表示第$i$时刻的观测值.
+\end{itemize}
+
+在任一时刻,观测变量的取值仅依赖于状态变量;$t$时刻的状态变量仅依赖于$t-1$时刻的状态.由此,可得所有概率的联合概率分布即结构信息
+\begin{equation}
+P(x_1,y_1,\dots,x_n,y_n)=P(y_1)P(x_1|y_1)\prod_{i=2}^nP(y_i|y_{i-1})P(x_i|y_i)
+\end{equation}
+
+此外,还需要以下参数才能确定一个完整的马尔科夫模型:
+\begin{itemize}
+\item 状态转移概率
+\begin{equation}
+a_{ij}=P(y_{t+1}=s_j|y_t=s_i)
+\end{equation}
+\item 输出观测概率
+\begin{equation}
+b_{ij}=P(x_t=o_j|y_t=s_j)
+\end{equation}
+\item 初始状态概率
+\begin{equation}
+\pi_i=P(y_1=s_1)
+\end{equation}
+\end{itemize}
+
+在实际中,人们常关注三个基本问题:
+\begin{itemize}
+\item 如何评估模型与观测序列的匹配程度?
+\item 如何根据观测序列推断出隐藏的模型状态?
+\item 如何训练模型使其能最好地描述观测数据?
+\end{itemize}
+
+\section{马尔可夫随机场(无向图模型,生成式模型)}
+% ## 14.2 马尔可夫随机场(无向图模型,生成式模型)
+
+马尔可夫随机场(Markov Random File, MRF)是典型的\textit{马尔可夫网}.
+\begin{itemize}
+\item 马尔可夫随机场有一组势函数(potential functions),亦称"因子"(factor),这是定义在变量子集上的非负实函数,主要用于定义概率分布函数.
+\item 如果结点子集中任意两个结点间都有边连接,则称该结点子集为"团"(clique).如果一个团中再加入任何一个结点都不能再形成团,则称该团为"极大团"(maximal clique).
+\end{itemize}
+
+马尔可夫随机场中,多个变量之间的联合概率分布能基于团分解为多个因子的乘机,每个因子仅与一个团相关.
+\begin{equation}
+P(\mathbf x)=\frac{1}{Z}\prod_{Q\in\mathcal C}\psi_Q(\mathbf x_Q)
+\end{equation}
+其中,$\psi_Q$为与团$Q$对应的势函数;$Z=\sum_{\mathbf x}\prod_{Q\in\mathcal C}\psi_Q(\mathbf x_Q)$为规范化因子.实际中,通常用极大团以及对应的势函数来代替上述公式里的团.
+
+分离集(seprating set):若从结点集$A$中的结点到$B$中的结点都必须经过结点集$C$中的结点,则称结点集$A$和$B$被结点集$C$分离.$C$称为分离集.
+
+基于分离集定义,可得"全局马尔科夫性"(global Markov property)定义,即给定两个变量子集的分离集,则这两个变量子集条件独立.同时还可以得到"局部马尔可夫性"(local Markov property)和"成对马尔可夫性"(pairwise Markov property)两个推论.
+
+\begin{itemize}
+\item 局部马尔可夫性:给定某变量的邻接变量,则该变量条件独立于其他变量.
+\item 成对马尔可夫性:给定所有其他变量,两个非邻接变量条件独立.
+\end{itemize}
+
+势函数$\psi_Q(\mathbf x_Q)$作为连接图和概率分布的桥梁,它的作用是刻画变量集$\mathbf x_Q$中变量之间的相关关系.它应该是非负函数,并且在所偏好的变量取值上有较大函数值.
+
+\section{条件随机场(无向图模型,判别式模型)}
+% ## 14.3 条件随机场(无向图模型,判别式模型)
+
+条件随机场(Conditional Random Field,CRF)是一种\textit{判别式无向图模型}.条件随机场视图对多个变量在给定观测值后的条件概率进行建模.
+
+令$G=<V,E>$表示结点与标记变量$\mathbf y$中元素一一对应的无向图,$y_v$表示与结点$v$对应的标记变量,$n(v)$表示结点$v$的邻接节点,若图$G$的每个变量$y_v$都满足马尔可夫性,即
+\begin{equation}
+P(y_v|\mathbf x,\mathbf y_{V\backslash v})=P(y_v|\mathbf x,\mathbf y_{n(v)})
+\end{equation}
+则$(\mathbf y, \mathbf x)$构成一个条件随机场.理论上来说$G$可以具有任何结构,只要能表示标记变量$\mathbf y$之间的条件独立性关系即可.
+
+条件随机场使用势函数和图结构上的团来定义条件概率$P(\mathbf y|\mathbf x)$.以链式条件随机场为例,通过选用指数势函数并引入特征函数,条件概率被定义为
+\begin{equation}
+P(\mathbf y|\mathbf x)=\frac{1}{Z}\exp\Big(\sum_j\sum_{i=1}^{n-1}\lambda_jt_j(y_{i+1},y_i,\mathbf x, i)+\sum_k\sum_{i=1}^n\mu_ks_k(y_i,\mathbf x,i)\Big)
+\end{equation}
+其中,转移特征函数$t_j(y_{i+1},y_i,\mathbf x, i)$用以刻画相邻标记变量之间的相关关系以及观测序列对它们的影响;状态特征函数$s_k(y_i,\mathbf x,i)$用于刻画观测序列对标记变量的影响;$\lambda_j$和$\mu_k$为参数;$Z$为规范化因子.
+
+条件随机场和马尔可夫随机场均使用团上的势函数来定义概率;但是条件随机场处理的是条件概率,马尔科夫随机场处理的是联合概率.
+
+\section{学习与推断(精确推断方法)}
+% ## 14.4 学习与推断(精确推断方法)
+
+对于概率图模型,为求得目标变量的边际分布或者以某些可观测变量为条件的条件分布,还需要确定具体分布的参数.若将参数视为待推测的变量,则参数估计过程和推断十分类似.推断问题的关键在于如何高效地计算边际分布.概率图模型的推断方法可以分为两类,一类是精确推断方法,另一类是近似推断方法.
+
+\subsection{变量消去}
+% ### 14.4.1 变量消去
+
+精确推断的实质是一类动态规划算法,它利用图模型所描述的条件独立性来削减计算目标概率值所需的计算量.
+
+通过利用乘法对加法的分配率,变量消去法把多个变量的积的求和问题,转化为对部分变量交替进行求积与求和的问题.但是缺点也很明显,如果需要计算多个边际分布,则使用变量消去法会造成大量的冗余计算.
+
+% \subsection{信念传播}
+% ### 14.4.2 信念传播
+
+信念传播(Belief Propagation)算法将变量消去法中的求和操作看做一个消息传递过程,较好地解决了求解多个边际分布时的重复计算问题.
+
+变量消去法通过求和操作
+\begin{equation}
+m_{ij}(x_j)=\sum_{x_i}\psi(x_i,x_j)\prod_{k\in n(i)\backslash j}m_{ki}(x_i)
+\end{equation}
+消去变量$x_i$.在信念传播算法中,这个操作视为从结点$x_i$向$x_j$传递了一个消息$m_{ij}(x_j)$.
+
+一个结点尽在接收到来自其它所有邻接结点的消息后才能向另一个结点发送消息,且结点的边际分布正比于它所接收的消息的乘积
+\begin{equation}
+P(x_i)\propto\prod_{k\in n(i)}m_{ki}(x_i)
+\end{equation}
+
+如果图中没有环,则信念传播法经过两个步骤即可完成所有的消息传播:
+\begin{enumerate}
+\item 指定一个根节点,从所有的叶节点开始向根节点传递消息,直到根节点收到所有邻接结点的消息;
+\item 从根节点开始向叶节点传递消息,直到所有叶节点均接收到消息.
+\end{enumerate}
+
+\section{近似推断}
+% ## 14.5 近似推断
+
+精确推断方法需要很大的计算开销,因此实际中近似推断方法更常用.近似推断方法可以分为两类:
+\begin{itemize}
+\item 采样(sampling),通过使用随机化方法完成近似;
+\item 使用确定性近似完成近似推断.
+\end{itemize}
+
+\subsection{MCMC采样}
+% ### 14.5.1 MCMC采样
+
+在实际中,我们关心某些分布并不是对这些分布的本身感兴趣,而是基于这些分布计算某些期望,并且还有可能基于这些期望做决策.
+
+具体来说,假定我们的目标是计算函数$f(x)$在概率密度函数$p(x)$下的期望
+\begin{equation}
+\mathbb E_p[f]=\int f(x)p(x)dx
+\end{equation}
+则可根据$p(x)$抽取一组样本$\{x_1,x_2,\dots,x_N\}$,然后计算$f(x)$在这些样本上的均值
+\begin{equation}
+\hat f=\frac{1}{N}\sum_{i=1}^Nf(x_i)
+\end{equation}
+对于概率图模型来说,就是如何高效地基于图模型所描述的概率分布来获取样本.
+
+概率图模型中最常用的采样技术就是马尔科夫链蒙特卡洛(Markov Chain Monte Carlo, MCMC)方法.
+
+举例来说,
+\begin{equation}
+P(A)=\int_Ap(x)dx
+\end{equation}
+若有函数$f:X\rightarrow\mathbb R$,则可计算$f(x)$的期望
+\begin{equation}
+p(f)=\mathbb E_p[f(X)]=\int_xf(x)p(x)dx
+\end{equation}
+MCMC先构造出服从$p$分布的独立同分布随机变量$x_i,x_2,\dots,x_N$,再得到无偏估计
+\begin{equation}
+\tilde p(f)=\frac{1}{N}\sum_{i=1}^Nf(x_i)
+\end{equation}
+.
+
+若概率密度函数$p(x)$很复杂,则构造服从$p$分布的独立同分布样本很困难.MCMC方法的关键就在于通过构造"平稳分布为p的马尔科夫链"来产生样本.马尔科夫链的平稳条件为
+\begin{equation}
+p(x^t)T(x^{t-1}|x^t)=p(x^{t-1})T(x^t|x^{t-1})
+\end{equation}
+则$p(x)$是该马尔科夫链的平稳分布,且马尔可夫链在满足该条件时已收敛到平稳状态.
+
+综上所述,MCMC先构造一条马尔可夫链,使其收敛至平稳分布恰为待估计参数的后验分布,然后通过这条马尔可夫链来产生符合后验分布的样本,并基于这些样本来进行估计.
+
+转移概率的构造至关重要,不同的转移概率构造产生不同的MCMC算法(见P333).
+
+\subsection{变分推断}
+% ### 14.5.2 变分推断
+
+变分推断通过使用已知简单分布来逼近需推断的复杂分布,并通过限制近似分布的类型,从而得到一种局部最优,但具有确定解的近似后验分布.
+
+首先引入概率模型参数估计的例子.通常以最大化对数似然函数为手段.同时可使用EM算法:
+\begin{enumerate}
+\item E步基于模型参数求出对隐变量的期望
+\item M步基于E步结果最大化模型参数
+\end{enumerate}
+
+其中,E步对$p(\mathbf z|\mathbf x, \Theta^t)$的推断很可能因为$\mathbf z$模型复杂而难以进行.此时引入变分推断.通常假设$\mathbf z$服从分布
+\begin{equation}
+q(\mathbf z)=\prod_{i=1}^Mq_i(\mathbf z_i)
+\end{equation}
+即假设$\mathbf z$可以拆解为一系列互相独立的多变量$\mathbf z_i$.(通过平均场方法对隐变量$\mathbf z$进行推断的方法见P336).
+
+在实践中使用变分法时,最重要的是考虑如何对隐变量进行拆解,以及假设各变量子集服从何种分布.
+
+\section{话题模型(有向图模型,生成式模型)}
+% ## 14.6 话题模型(有向图模型,生成式模型)
+
+隐狄利克雷分配模型(Latent Dirichlet Allocation, LDA)是话题模型的典型代表.
+
+生成文档$t$的方法为:
+
+\begin{enumerate}
+\item 根据参数为$\alpha$的狄利克雷分布随机采样一个话题分布$\Theta_t$;
+\item 按照如下步骤生成文档中的$N$个词:
+    \begin{enumerate}
+    \item 根据$\Theta_t$进行话题指派,得到文档$t$中词$n$的话题$z_{t,n}$
+    \item 根据指派的话题所对应的词频分布$\beta_k$随机采样生成词
+    \end{enumerate}
+\end{enumerate}
+推断参数的过程可见P339.
