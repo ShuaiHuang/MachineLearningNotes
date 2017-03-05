@@ -22,16 +22,20 @@
 
 归纳偏好可看作学习算法在庞大的假设空间中对假设所进行选择的启发式或价值观."奥卡姆剃刀"(Occam's razor)是一种一般性的原则来引导建立"正确的"偏好,其内容为"若有多个假设与观察一致,则选择最简单的那个".归纳偏好的原则也不能一概而论,算法的归纳偏好是否与问题本身匹配,大多数时候决定了算法能否取得好的性能.
 
-假设$P(h|\mathbf X,\mathcal L_a)$代表算法$\mathcal L_a$基于训练数据$\mathbf X$产生假设$h$的概率,再令$f$代表希望学习的真实函数.$\mathcal L_a$的"训练集外误差"为
+假设样本空间$\mathcal X$和假设空间$\mathcal H$都是分散的，$P(h|\mathbf X,\mathcal L_a)$代表算法$\mathcal L_a$基于训练数据$\mathbf X$产生假设$h$的概率,再令$f$代表希望学习的真实函数.$\mathcal L_a$在\textbf{训练集外所有样本上产生的误差}为
 \begin{equation}
-E_{ote}(\mathcal L_a|\mathbf X, f)=\sum_h\sum_{x\in\mathcal X-x}P(x)\text{I}(h(x)\ne f(x))P(h|\mathbf X,\mathcal L_a)
+E_{ote}(\mathcal L_a|\mathbf X, f)=\sum_h\sum_{x\in\mathcal X - X}P(\mathbf x)\text{I}(h(\mathbf x)\ne f(\mathbf x))P(h|\mathbf X,\mathcal L_a)
 \end{equation}
 其中$\text{I}(\cdot)$是指示函数.
 
 考虑二分类问题,对所有可能的$f$按均匀分布对误差求和,有
-\begin{equation}
-\sum_fE_{ote}(\mathcal L_a|\mathbf X,f)=2^{|\mathcal X|-1}\sum_{x\in\mathcal X-x}P(x)\cdot 1
-\end{equation}
-误差与学习算法无关,这就是"没有免费午餐"(No Free Lunch Theorem, NFL定理).
+\begin{equation}\begin{split}
+\sum_fE_{ote}(\mathcal L_a|\mathbf X,f)&=\sum_f\sum_h\sum_{\mathbf x\in\mathcal X-X}P(\mathbf x)\text{I}(h(\mathbf x)\ne f(\mathbf x))P(h|X,\mathcal L_a)\\
+&=\sum_{\mathbf x\in\mathcal X-X}P(\mathbf x)\sum_hP(h|X,\mathcal L_a)\sum_f\text{I}(h(\mathbf x)\ne f(\mathbf x))\\
+&=\sum_{\mathbf x\in\mathcal X-X}P(\mathbf x)\sum_hP(h|X,\mathcal L_a)\frac{1}{2}2^{|\mathcal X|}\\
+&=\frac{1}{2}2^{|\mathcal X|}\sum_{x\in\mathcal X-X}P(\mathbf x)\sum_hP(h|X,\mathcal L)\\
+&=2^{|\mathcal X|-1}\sum_{\mathbf x\in\mathcal X-X}P(\mathbf x)\cdot 1
+\end{split}\end{equation}
+误差与学习算法无关,这就是"没有免费午餐"(No Free Lunch Theorem, NFL定理).第二行到第三行推导成立的原因是若$f$均匀分布，则有一半的$f$对$x$的预测与$h(x)$不一致.
 
 但是需要注意的是,NFL引入了一个重要前提,所有"问题"出现的机会相同,或所有问题同等重要,即所有可能的$f$按均匀分布.因此必须清楚地认识到,脱离具体问题空谈"什么算法更好"毫无意义.学习算法自身的归纳偏好与问题是否相匹配,起到决定性作用.
