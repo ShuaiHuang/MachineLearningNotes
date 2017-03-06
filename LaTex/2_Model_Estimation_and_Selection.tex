@@ -26,7 +26,7 @@
 
 交叉验证法将数据集划分为$k$个大小相似的互斥子集,并且保持每个子集上的数据一致性.进行$k$轮迭代,每次用$k-1$个子集的并集作为训练集,剩余的1个子集作为测试集.
 
-如果$k$取值与训练集样本数目相等,则称为"留一法"(Leave-One-Out, LOO).但是留一法未必永远比其他模型准确,NFL定理对实验评估方法同样适用.
+如果$k$取值与训练集样本数目相等,则称为"留一法"(Leave-One-Out, LOO).但是留一法未必永远比其他模型准确,NFL定理对实验评估方法同样适用\footnote{如果训练集和测试集的采样不考虑样本原本分布，所有样本划分做等价考虑，则最终的平均评价指标不会相差太多.}.
 
 \subsection{自助法}
 % ### 2.2.3 自助法
@@ -68,7 +68,7 @@ P=\frac{TP}{TP+FP}\\
 R=\frac{TP}{TP+FN}
 \end{split}\end{equation}
 
-查准率和查全率是一对磨盾的度量.
+查准率和查全率是一对矛盾的度量.
 
 如果根据学习期的预测结果对样例进行排序,按此顺序逐个把样本作为正例进行预测,可以计算出当前的查全率,查准率.以查准率为纵轴,以查全率作为横轴,就得到了查准率-查全率曲线,简称P-R曲线.
 
@@ -103,13 +103,14 @@ micro-F1&=\frac{2\times micro-P \times micro-R}{micro-P+micro-R}
 \subsection{ROC与AUC}
 % ### 2.3.3 ROC与AUC
 
-ROC曲线的纵轴是"真正例率"(True Positive Rate, TPR),横轴是"假正例率"(False Positive Rate),分别定义为
+ROC曲线的纵轴是"真正例率"\footnote{判断为真的正样本占所有正样本的比例.}(True Positive Rate, TPR),横轴是"假正例率"\footnote{判断为真的负样本占所有负样本的比例.}(False Positive Rate),分别定义为
 \begin{equation}\begin{split}
 TPR&=\frac{TP}{TP+FN}\\
 FPR&=\frac{FP}{TN+FP}
 \end{split}\end{equation}
+点$(0,1)$对应于将所有正例排在所有所有负例之前的理想模型;对角线对应于随机猜测的模型,即TPR与FPR取值相同.
 
-一般比较合理的通过ROC度量学习器性能的方式为比较ROC曲线下的面积,即AUC(Area Under ROC Curve).
+笼统比较方式来看,曲线越靠近左上角表明学习器的性能越好.量化比较方式来看,比较合理的通过ROC度量学习器性能的方式为比较ROC曲线下的面积,即AUC(Area Under ROC Curve).
 
 \subsection{代价敏感错误率与代价曲线}
 % ### 2.3.4 代价敏感错误率与代价曲线
