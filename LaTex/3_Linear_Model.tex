@@ -46,10 +46,11 @@ y=\frac{1}{1+e^{-(\mathbf{w^Tx}+b)}}
 
 线性判别分析(Linear Discriminant Analysis, LDA)的思想为:给定训练样例集,设法将样例投影到一条直线上,使得同类样例的投影点尽可能接近,异类样例投影点尽可能远离.
 
-令$X_i,\mu_i,\Sigma_i$分别表示第$i$类示例的集合,均值向量,协方差矩阵,则可得到最大化的目标
-\begin{equation}
-J=\frac{\mathbf{w^T(\mu_0-\mu_1)(\mu_0-\mu_1)^Tw}}{\mathbf{w^T(\Sigma_0+\Sigma_1)w}}
-\end{equation}
+令$X_i,\mu_i,\Sigma_i$分别表示第$i$类示例的集合,均值向量,协方差矩阵.若将数据投影到直线$\mathbf w$上,则两类样本的中心在直线上的投影分别为$\mathbf{w^T\mu_0}$和$\mathbf{w^T\mu_1}$;若将所有样本点都投影到直线上,则两类样本的协方差分别为$\mathbf{w^T\Sigma_0w}$和$\mathbf{w^T\Sigma_1w}$.则可得到最大化的目标
+\begin{equation}\begin{split}
+J&=\frac{\|\mathbf{w^T\mu_0-w^T\mu_1}\|_2^2}{\mathbf{w^T\Sigma_0w+w^T\Sigma_1w}}\\
+&=\frac{\mathbf{w^T(\mu_0-\mu_1)(\mu_0-\mu_1)^Tw}}{\mathbf{w^T(\Sigma_0+\Sigma_1)w}}
+\end{split}\end{equation}
 定义类内散度矩阵(within-class scatter matrix)
 \begin{equation}
 S_w=\Sigma_0+\Sigma_1
@@ -80,7 +81,7 @@ ECOC在码长较小时可以根据这个原则计算出理论最优编码.然而
 类别不平衡(class-imbalance)就是指分类任务中不同类别的训练样例数目差别很大的情况.从线性分类器角度来看,用$y=\mathbf{w^Tx}+b$对样本$\mathbf x$进行分类时,实际上是用$y$与某一个阈值进行比较.通常用$0.5$作为阈值.但是由于我们通常假设训练集是真实样本总体的无偏采样,因此有如下的"再平衡"策略:
 
 观测几率就代表了真实几率,设$m^+$和$m^-$分别为正例数目和反例数目,判别形式为
-\begin{equation}
+\begin{equation}\label{eq:rescaling}
 \text{若}\frac{y}{1-y}>\frac{m^+}{m^-}\text{时,预测为正例}
 \end{equation}
 
@@ -88,5 +89,5 @@ ECOC在码长较小时可以根据这个原则计算出理论最优编码.然而
 \begin{itemize}
 \item 直接对训练集里的反类样例进行欠采样(undersampling)
 \item 对训练集里的正类样例进行过采样(oversampling)
-\item 直接基于原始训练集进行学习,将上述再平衡策略纳入到决策过程中,称为"阈值移动"(hhreshold-moving).
+\item 直接基于原始训练集进行学习,将式(\ref{eq:rescaling})所代表的再平衡策略纳入到决策过程中,称为"阈值移动"(shreshold-moving).
 \end{itemize}
