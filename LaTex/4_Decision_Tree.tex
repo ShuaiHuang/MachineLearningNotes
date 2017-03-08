@@ -60,6 +60,8 @@ CART决策树使用"基尼指数"(Gini index)来选择划分属性,数据集$D$�
 
 决策树剪枝的策略有"预剪枝"(prepruning)和"后剪枝"(postpruning).预剪枝是在决策树生成过程中对每个结点在划分前进行估计,若当前结点的划分不能带来泛化性能的提升,则停止划分并将当前结点标记为叶节点;后剪枝则是先从训练集生成一颗完整的决策树,然后自底向上地对非叶结点进行考察,若将该结点对应的子树替换为叶节点能提升泛化性能,则将该子树替换为叶结点.
 
+通常将数据集划分为训练集和验证集.采用预剪枝方法时,根据训练集选取最优属性,如果选取的最优属性可以提升验证集的精度时,则进行划分,否则不进行划分.采用后剪枝方法时,自底向上选择非叶结点,依次替换为叶结点,如果精度提升,则进行替换,否则不进行替换.
+
 \section{连续与缺失值}
 % ## 4.4 连续与缺失值
 
@@ -67,9 +69,10 @@ CART决策树使用"基尼指数"(Gini index)来选择划分属性,数据集$D$�
 % ### 4.4.1 连续值处理
 
 在C4.5决策树算法中,对于属性取值为连续值,最简单的处理方式采用二分法(bi-partition)对连续属性进行处理.设连续属性$a$在样本集$D$上出现了$n$个不同的取值$\{a^1,a^2,\dots,a^n\}$,基于划分点$t$可将$D$分为子集$D_t^-$和$D_t^+$,则划分点集合为$T_a=\{\frac{a^i+a^{i+1}}{2}|1\le i\le n-1\}$,可得信息增益
-\begin{equation}
-\text{Gain}(D,a)=\max_{t\in T_a}\text{Gain}(D,a,t)=\max_{t\in T_a}\text{Ent}(D)-\sum_{\lambda\in\{-,+\}}\frac{|D_t^\lambda|}{|D|}\text{Ent}(D_t^\lambda)
-\end{equation}
+\begin{equation}\begin{split}
+\text{Gain}(D,a)&=\max_{t\in T_a}\text{Gain}(D,a,t)\\
+&=\max_{t\in T_a}\text{Ent}(D)-\sum_{\lambda\in\{-,+\}}\frac{|D_t^\lambda|}{|D|}\text{Ent}(D_t^\lambda)
+\end{split}\end{equation}
 其中$\max_{t\in T_a}\text{Gain}(D,a,t)$是样本集$D$基于划分点$t$二分后的信息增益.
 
 与离散属性不同,若当前结点划分属性为连续属性,该属性还可作为其后代结点的划分属性.
