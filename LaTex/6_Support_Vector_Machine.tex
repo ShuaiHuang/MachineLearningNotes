@@ -1,12 +1,12 @@
 \chapter{支持向量机}
 % # 【《机器学习》第6章】支持向量机
 
-本章的内容从逻辑上来说就是支持向量机的推导过程,其中涉及部分关于最优化理论的知识点,需要掌握:拉格朗日乘子法,对偶问题,KKT条件,松弛变量.
+本章的内容从逻辑上来说就是支持向量机的推导过程,其中涉及部分关于最优化理论的知识点,需要掌握:拉格朗日乘子法,对偶问题,KKT条件,松弛变量(见附录B).
 
 \section{间隔与支持向量}
 % ## 6.1 间隔与支持向量
 
-给定训练样本集$D=\{(\mathbf x_1, y_1),(\mathbf x_2, y_2),\cdots,(\mathbf x_m, y_m)\},y_i\in\{-1,+1\}$,从直观上看,应该去找位于两类样本间的超平面去划分两类样本,而位于两类样本"正中间"得划分超平面泛化性能最好.这就是支持向量机的最核心思想.
+给定训练样本集$D=\{(\mathbf x_1, y_1),(\mathbf x_2, y_2),\cdots,(\mathbf x_m, y_m)\},y_i\in\{-1,+1\}$,从直观上看,应该去找位于两类样本间的超平面去划分两类样本,而位于两类样本"正中间"的划分超平面泛化性能最好.这就是支持向量机的最核心思想.
 
 空间中超平面可以通过
 \begin{equation}
@@ -32,13 +32,13 @@ $\gamma$也被称为间隔.
 因此SVM基本型可以被定义为
 \begin{equation}\begin{split}
 \max_{\mathbf x,b}&\frac{2}{\|\mathbf w\|} \\
-s.t.& \,y_i(\mathbf{w_i^Tx_i}+b)\ge 1,\quad i=1,2,\cdots,m.
+\text{\text{s.t.}}& \,y_i(\mathbf{w_i^Tx_i}+b)\ge 1,\quad i=1,2,\cdots,m.
 \end{split}\end{equation}
 
 上述问题等价为
 \begin{equation}\begin{split}
 \min_{\mathbf x,b}&\frac{1}{2}\|\mathbf w\|^2 \\
-s.t.& \,y_i(\mathbf{w_i^Tx_i}+b)\ge 1,\quad i=1,2,\cdots,m.
+\text{s.t.}& \,y_i(\mathbf{w_i^Tx_i}+b)\ge 1,\quad i=1,2,\cdots,m.
 \end{split}\end{equation}
 这就是SVM的基本型.
 
@@ -52,7 +52,7 @@ SVM基本型本身一个凸二次规划问题,可以用现成的优化计算包�
 令$L$对$\mathbf w$和$b$的偏导为$0$,并代回拉格朗日函数消去$\mathbf w$和$b$,得到对偶问题
 \begin{equation}\begin{split}
 \max_{\mathbf\alpha}&\sum_{i=1}^m\alpha_i-\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^m\alpha_i\alpha_jy_iy_j\mathbf{x_i^Tx_j}\\
-s.t.&\,\sum_{i=1}^m\alpha_iy_i=0,\\
+\text{s.t.}&\,\sum_{i=1}^m\alpha_iy_i=0,\\
 &\alpha_i\ge 0,\quad i=1,2,\cdots,m.
 \end{split}\end{equation}
 
@@ -85,7 +85,7 @@ y_if(\mathbf x_i)-1\ge 0\\
 原问题可以推广为
 \begin{equation}\begin{split}
 \max_{\mathbf\alpha}&\sum_{i=1}^m\alpha_i-\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^m\alpha_i\alpha_jy_iy_j\phi(\mathbf{x_i})^T\phi(\mathbf{x_j})\\
-s.t.&\,\sum_{i=1}^m\alpha_iy_i=0,\\
+\text{s.t.}&\,\sum_{i=1}^m\alpha_iy_i=0,\\
 &\alpha_i\ge 0,\quad i=1,2,\cdots,m.
 \end{split}\end{equation}
 上式涉及到计算$\phi(\mathbf{x_i})^T\phi(\mathbf{x_j})$,由于特征空间的维数很高,因此直接计算很困难.可以通过设置
@@ -107,10 +107,10 @@ f(\mathbf x)&=\mathbf w^T+b\\
 
 另外一种解决训练样本线性不可分的方法是"软间隔"(soft margin),即允许支持向量机在一些样本上出错.因此,优化目标可以总结为
 \begin{equation}\begin{split}
-\min_{\mathbf w,b}\frac{1}{2}\|w\|^2+C\sum_{i=1}^m\mathcal l_{0/1}(y_i(\mathbf{w^Tx_i}+b)-1)
+\min_{\mathbf w,b}\frac{1}{2}\|w\|^2+C\sum_{i=1}^ml_{0/1}(y_i(\mathbf{w^Tx_i}+b)-1)
 \end{split}\end{equation}
-其中$C>0$是一个常数,$\mathcal l_{0/1}$是"0/1"损失函数
-\begin{equation}\mathcal l_{0/1}=\left\{\begin{array}{ll}
+其中$C>0$是一个常数,$l_{0/1}$是"0/1"损失函数
+\begin{equation}l_{0/1}=\left\{\begin{array}{ll}
 1,\,\text{if}\quad z<0\\
 0,otherwise
 \end{array}\right.\end{equation}
@@ -120,7 +120,7 @@ f(\mathbf x)&=\mathbf w^T+b\\
 采用hinge损失,引入"松弛变量"(slack variables),上式可重写为
 \begin{equation}\begin{split}
 \min_{\mathbf w,b,\xi}&\frac{1}{2}\|\mathbf w\|^2+C\sum_{i=1}^m\xi_i\\
-s.t.&\,y_i(\mathbf{w^Tx_i}+b)\ge1-\xi_i\\
+\text{s.t.}&\,y_i(\mathbf{w^Tx_i}+b)\ge1-\xi_i\\
 &\xi_i\ge0,\,i=1,2,\cdots,m.
 \end{split}\end{equation}
 
