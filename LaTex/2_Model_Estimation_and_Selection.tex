@@ -125,14 +125,26 @@ ROC曲线上的每一点对应了代价平面上的一条线段.设ROC曲线上�
 % ## 2.4 比较检验
 
 性能度量还存在几个重要问题:
-
 \begin{enumerate}
 \item 我们希望比较的是泛化性能,不是测试集上的误差
 \item 测试集上的性能与测试集本身有很大关系
 \item 机器学习的算法具有随机性
 \end{enumerate}
+本章将上述三点纳入考虑范围,阐述了如何比较模型的性能.
 
-统计假设检验为我们进行学习器性能比较提供了重要依据.各种假设检验见P37-P44.
+首先对于\textbf{单个学习器}的泛化性能的假设提出\textit{假设检验}.即考虑$\epsilon<\epsilon_0$(即误差$\epsilon$小于某个常量$\epsilon_0$),则在置信度$1-\alpha$的概率内所能观测到的最大错误率.常用的检验方法有
+\begin{itemize}
+    \item 二项检验
+    \item $t$-检验
+\end{itemize}
+
+\textit{比较检验}是对\textbf{多个学习器性能}进行比较.常用的检验方法有
+\begin{itemize}
+    \item 交叉验证$t$-检验
+    \item McNemar检验
+    \item Fried检验
+    \item Nemenyi检验
+\end{itemize}
 
 \section{偏差与方差}
 % ## 2.5 偏差与方差
