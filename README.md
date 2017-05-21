@@ -4,7 +4,7 @@ For better reading experience, anyone can read it either on my [blog](http://shu
 
 Issues and pull requests are welcomed. Or you can contact me via my email which can be found in my profile page on GitHub.
 
-===
+====
 
 这个仓库主要用来备份我的《机器学习》（周志华著）读书笔记。
 
