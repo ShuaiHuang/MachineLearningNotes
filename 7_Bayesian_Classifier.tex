@@ -6,53 +6,56 @@
 \section{贝叶斯判别核心}
 % ## 7.1 贝叶斯判别核心
 
-- 最小化错误率贝叶斯分类器
+最小化错误率贝叶斯分类器定义为
 \begin{equation}
-h^\ast=argmax_{c\in \mathcal{y}}P(c|\mathbf{x})
+h^\ast(\bm x)=argmax_{c\in \mathcal Y}P(c|\bm{x})
 \end{equation}
+即选择能使后验概率最大的类别标记.
 
 \begin{itemize}
 \item 后验概率两种不同的生成方式
     \begin{itemize}
-    \item 判别式模型 discriminative model 直接生成$P(c|\mathbf{x})$
-    \item 生成式模型 generative model 先生成$P(\mathbf{x}, c)$再由之推导出$P(c|\mathbf{x})$
+    \item 判别式模型 discriminative model 直接生成$P(c|\bm{x})$
+    \item 生成式模型 generative model 先生成$P(\bm{x}, c)$再由之推导出$P(c|\bm{x})$
     \end{itemize}
 \item 进一步分解
     \begin{equation}
-    P(c|\mathbf{x})=\frac{P(\mathbf{x}, c)}{P(\mathbf{x})}=\frac{P(\mathbf{x}|c)P(c)}{P(\mathbf{x})}
+    P(c|\bm{x})=\frac{P(\bm{x}, c)}{P(\bm{x})}=\frac{P(\bm{x}|c)P(c)}{P(\bm{x})}
     \end{equation}
-    \item 其中，$P(\mathbf{x})$和$P(c)$可以从抽样样本中估计得出
-    \item 问题是如何得出$P(\mathbf{x}|c)$，进而推导出后验概率$P(c|\mathbf{x})$
+    \item 其中，$P(\bm{x})$和$P(c)$可以从抽样样本中估计得出
+    \item 问题是如何得出$P(\bm{x}|c)$，进而推导出后验概率$P(c|\bm{x})$
 \end{itemize}
 
 \section{极大似然估计（频率主义学派）}
 % ## 7.2 极大似然估计（频率主义学派）
 
-\subsection{频率主义学派与贝叶斯学派之争}
+估计条件概率的一种常用策略是先假定具有某种确定的概率分布形式,然后基于训练样本对概率分布的参数进行估计.
+
+\paragraph{频率主义学派与贝叶斯学派之争}
 % ### 频率主义学派与贝叶斯学派之争
 
 \begin{itemize}
 \item 频率主义学派观点：模型参数是一个客观固定值
 \item 贝叶斯学派观点：模型参数是一个未观察到的随机变量，服从一定的分布规律
-\item 因此，求取$P(\mathbf{x}|c)$的过程进一步被归结为求取$P(\mathbf{x}|\mathbf{\theta}_c)$的过程
+\item 因此，求取$P(\bm{x}|c)$的过程进一步被归结为求取$P(\bm{x}|\bm{\theta}_c)$的过程
 \end{itemize}
 
-\subsection{极大似然估计}
+\paragraph{极大似然估计}
 % ### 极大似然估计
 
 \begin{itemize}
-\item 最优模型参数$\mathbf{\theta_c}$一定是能够让当前观察值以最大概率出现的参数
-\item 似然定义$P(\mathcal{D_c}|\mathbf{\theta_c})=\prod_{\mathbf{x}\in\mathcal{D}_c}P(\mathbf{x}|\mathbf{\theta_c})$
-\item 防止下溢，取对数$\log P(\mathcal{D_c}|\mathbf{\theta_c})=\sum_{\mathbf{x}\in\mathcal{D}_c}\log P(\mathbf{x}|\mathbf{\theta_c})$
+\item 最优模型参数$\bm{\theta_c}$一定是能够让当前观察值以最大概率出现的参数
+\item 似然定义$P(\mathcal{D}_c|\bm{\theta_c})=\prod_{\bm{x}\in\mathcal{D}_c}P(\bm{x}|\bm{\theta_c})$
+\item 防止下溢，取对数$\log P(\mathcal{D}_c|\bm{\theta_c})=\sum_{\bm{x}\in\mathcal{D}_c}\log P(\bm{x}|\bm{\theta_c})$
 \item 极大似然估计缺点模型必须准确，如果模型不准确，即使参数准确，也有可能出现偏差。即数据潜在分布规律必须要与估计分布相一致
 \end{itemize}
 
-\subsection{朴素贝叶斯模型（贝叶斯学派）}
+\section{朴素贝叶斯分类器（贝叶斯学派）}
 % ## 7.3 朴素贝叶斯模型（贝叶斯学派）
 
 \begin{itemize}
-\item $P(\mathbf{x}|c)$是所有属性值上的联合分布，对其进行估计存在一定的困难
-\item 引入前提假设：所有的属性值$x_i$相互独立$$P(c|\mathbf{x})=\frac{P(\mathbf{x}|c)P(c)}{P(\mathbf{x})}=\frac{P(c)\prod_{i=1}^dP(x_i|c)}{P(\mathbf{x})}$$
+\item $P(\bm{x}|c)$是所有属性值上的联合分布，对其进行估计存在一定的困难
+\item 引入前提假设,对模型进行简化：所有的属性值$x_i$相互独立$$P(c|\bm{x})=\frac{P(\bm{x}|c)P(c)}{P(\bm{x})}=\frac{P(c)\prod_{i=1}^dP(x_i|c)}{P(\bm{x})}$$
 \item 由样本集$\mathcal{D}$得出：每个类别$c$上属性值$x_i$的条件概率$P(x_i|c)$
 \item 为防止某个类别上属性值样本数为0，对样本进行平滑，常用拉普拉斯修正
     \begin{itemize}
@@ -66,16 +69,16 @@ h^\ast=argmax_{c\in \mathcal{y}}P(c|\mathbf{x})
 % ## 7.4 半朴素贝叶斯分类器
 
 \begin{itemize}
-\item 朴素贝叶斯分类器的前提条件为：所有属性之间相互独立。然而这一条件在实际中很难被满足，由此，半朴素贝叶斯分类器（semi-na$\ddot{i}$ve bayesian classifiers）被提出，用以改进朴素贝叶斯前提条件中的限制性因素。
-\item One Dependent Estimator(ODE)即独依赖估计是半朴素贝叶斯分类器的一个常用策略。独依赖估计是指没一个因素在类别之外至多仅依赖一项其他因素。
+\item 朴素贝叶斯分类器的前提条件为：所有属性之间相互独立。然而这一条件在实际中很难被满足，由此，半朴素贝叶斯分类器（semi-na$\ddot{i}$ve bayesian classifiers）被提出，用以改进朴素贝叶斯前提条件中的限制性因素。半朴素贝叶斯分类器适当考虑一部分属性间的依赖信息.
+\item One Dependent Estimator(ODE)即独依赖估计是半朴素贝叶斯分类器的一个常用策略。独依赖估计是指每一个因素在类别之外至多仅依赖一项其他因素。
 \begin{equation}
-P(c|\mathbf{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
+P(c|\bm{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
 \end{equation}
 \item Super Parent ODE(SPODE)即超父独依赖估计假定所有的属性都依赖于同一个父属性
 \item Tree Augmented naive bayesian(TAN)通过最大带权生成树算法的基础上，通过以下步骤对属性间依赖关系进行简化
     \begin{enumerate}
     \item 计算两两属性间的条件互信息
-    \begin{equation}I(x_i,x_j|y)=\sum_{x_i,x_j,c\in\mathcal{y}}P(x_i,x_j|c)\log\frac{P(x_i,x_j|c)}{P(x_i|c)P(x_j|c)}
+    \begin{equation}I(x_i,x_j|y)=\sum_{x_i,x_j,c\in\mathcal{Y}}P(x_i,x_j|c)\log\frac{P(x_i,x_j|c)}{P(x_i|c)P(x_j|c)}
     \end{equation}
     \item 生成全连接图，以互信息为两两结点间的权重
     \item 由此构建最大带权生成树需要进一步学习，挑选根向量，将边置为有向
@@ -86,7 +89,7 @@ P(c|\mathbf{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
     \item AODE尝试将每一个节点定义成父节点，构建SPODE
     \item 将那些有足够的数据支撑的SPODE集成起来作为最终结果
     \begin{equation}
-    P(c|\mathbf{x})\propto \sum_{i=1, |D_{x_i}|\ge m'}^dP(c,x_i)\prod_{j=1}^dP(x_j|c,x_i)
+    P(c|\bm{x})\propto \sum_{i=1, |D_{x_i}|\ge m'}^dP(c,x_i)\prod_{j=1}^dP(x_j|c,x_i)
     \end{equation}
     \item AODE无需模型选择
     \end{enumerate}
@@ -102,7 +105,7 @@ P(c|\mathbf{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
 
 \begin{itemize}
 \item 贝叶斯网亦称信念网(belief network)，使用有向非环图（Directed Acyclic Graph）来说明各个属性之间的依赖关系。
-\item 有向非环图由结构$G$和参数$\mathcal{\Theta}$两部分构成，即
+\item 有向非环图由结构$G$和参数$\Theta$两部分构成，即
 \begin{equation}
 G=<B|\Theta>
 \end{equation}
@@ -134,7 +137,7 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
         \item 将所有V型结构父节点用无向边进行连接
         \item 将所有有向边变成无向边
         \end{enumerate}
-    \item 给定属性$x,y$和属性集$\mathbf{z}$，若在属性集中去除$\mathbf{z}$属性后，$x,y$节点没有通路进行连接，则$x,y$关于属性集$\mathbf{z}$条件独立。
+    \item 给定属性$x,y$和属性集$\bm{z}$，若在属性集中去除$\bm{z}$属性后，$x,y$节点没有通路进行连接，则$x,y$关于属性集$\bm{z}$条件独立。
     \end{enumerate}
 \end{itemize}
 
@@ -165,12 +168,12 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
 \item 这种情况下就要使用近似推断在有限时间内取得近似解。
 \item 吉布斯采样(Gibbs sampling)原理：
     \begin{itemize}
-    \item 假设$\mathbf{Q}=\{Q_1,Q_2,\dots,Q_n\}$是待查询变量，$\mathbf{E}=\{E_1,E_2,\dots,E_k\}$是证据变量，目标是计算后验概率$P(\mathbf{Q}|\mathbf{E})$。
-    \item 随机产生一个符合$\mathbf{E=e}$的样本作为初始起点
-    \item 对非证据变量进行逐个采样改变其取值，采样概率根据贝叶斯网和其他变量的当前取值计算获得。
-    \item 假定经过$T$次采样得到的与$\mathbf{q}$一致的样本有$n_q$个，则可近似估算出后验概率\begin{equation}P(\mathbf{Q}|\mathbf{E})\simeq \frac{n_q}{T}\end{equation}
+    \item 假设$\mathbf Q=\{Q_1,Q_2,\dots,Q_n\}$是待查询变量，$\mathbf E=\{E_1,E_2,\dots,E_k\}$是证据变量，目标是计算后验概率$P(\mathbf{Q}=\bm q|\mathbf{E}=\bm e)$。
+    \item 随机产生一个符合$\mathbf E=\bm{e}$的样本$\bm q_0$作为初始起点
+    \item 对非证据变量(待查询变量)进行逐个采样改变其取值，采样概率根据贝叶斯网和其他变量的当前取值计算获得\footnote{从当前样本出发产生下一个样本,见图$7.5$}。
+    \item 假定经过$T$次采样得到的与$\bm{q}$一致的样本有$n_q$个，则可近似估算出后验概率\begin{equation}P(\mathbf{Q}=\bm q|\mathbf{E}=\bm e)\simeq \frac{n_q}{T}\end{equation}
     \end{itemize}
-\item 吉布斯采样实质上是在$\mathbf{E=e}$的子空间上进行的随机漫步，每一步依赖于前一步的状态，所以这是一个马尔科夫链
+\item 吉布斯采样实质上是在$\mathbf E=\bm{e}$的子空间上进行的随机漫步，每一步依赖于前一步的状态，所以这是一个马尔科夫链
     \item 需要较长时间才能收敛
     \item 如果网络中存在有0或1这样的极端概率，则可能收敛于一个错误的状态
 \end{itemize}
@@ -179,10 +182,10 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
 % ## 7.6 EM算法
 
 \begin{itemize}
-\item 在某些变量未被观测到的情况下，直接做最大似然估计，则需要做边际最大似然\begin{equation}L(\mathbf{\Theta|X})=\ln P(\mathbf{X|\Theta})=\ln \sum_{\mathbf{Z}}P(\mathbf{X,Z}|\Theta)\end{equation}
+\item 在某些变量未被观测到的情况下，直接做最大似然估计，则需要做边际最大似然\begin{equation}L(\bm\Theta|\mathbf X)=\ln P(\mathbf X|\bm\Theta)=\ln \sum_{\mathbf Z}P(\mathbf{X,Z}|\bm\Theta)\end{equation}
 \item EM算法原型
     \begin{itemize}
-    \item E步 求出关于$P(\mathbf{Z}|\mathbf{X},\Theta^t)$的分布，并计算对数似然关于$\mathbf{Z}$的期望
+    \item E步 求出关于$P(\mathbf Z|\mathbf X,\bm\Theta^t)$的分布，并计算对数似然关于$\bm{Z}$的期望
     \item M步 寻找最大化期望似然
     \end{itemize}
 \item 隐变量估计也可以通过梯度下降法求解，但是求和项数将会随着隐变量的数目以指数级上升
