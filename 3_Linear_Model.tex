@@ -12,7 +12,7 @@ f(\mathbf x)=\mathbf{w^Tx}+b
 \section{线性回归}
 % ## 3.2 线性回归
 
-"线性回归"(linear regression)试图学得一个线性模型以尽可能准确地预测实值输出标记.一般使用最小二乘法找到一条直线,使得各个样本到直线上的距离之和最小.用矩阵形式表示为
+``线性回归''(linear regression)试图学得一个线性模型以尽可能准确地预测实值输出标记.一般使用最小二乘法找到一条直线,使得各个样本到直线上的距离之和最小.用矩阵形式表示为
 \begin{equation}
 \mathbf{\hat w}={\arg\min}_{\mathbf{\hat w}}\mathbf{(y-X\hat w)^T(y-X\hat w)}
 \end{equation}
@@ -30,12 +30,12 @@ f(\mathbf x)=\mathbf{w^Tx}+b
 \begin{equation}
 y=g^{-1}(\mathbf{w^Tx}+b)
 \end{equation}
-这样得到的模型称为"广义线性模型"(generalized linear model).
+这样得到的模型称为``广义线性模型''(generalized linear model).
 
 \section{对数几率回归}
 % ## 3.3 对数几率回归
 
-如果要做的是分类任务,只需要找一个单调可微函数将分类任务的真实标记$y$与线性回归模型的预测值联系起来.最理想的是"单位阶跃函数"(unit-step function),但是由于其不是连续的,所以需要找到一个"替代函数"(surrogate function).对数几率函数(logistic function)正是这样一个函数.
+如果要做的是分类任务,只需要找一个单调可微函数将分类任务的真实标记$y$与线性回归模型的预测值联系起来.最理想的是``单位阶跃函数''(unit-step function),但是由于其不是连续的,所以需要找到一个``替代函数''(surrogate function).对数几率函数(logistic function)正是这样一个函数.
 \begin{equation}
 y=\frac{1}{1+e^{-(\mathbf{w^Tx}+b)}}
 \end{equation}
@@ -64,11 +64,11 @@ S_b=\mathbf{(\mu_0-\mu_1)(\mu_0-\mu_1)^T}
 \section{多分类学习}
 % ## 3.5 多分类学习
 
-在实际中,有些二分类学习方法可以直接推广到多分类,但是在大部分情形下,我们利用二分类学习器来解决多分类问题.通常采用的方法是"拆解法",即将多分类任务拆解成二分类任务.常用的拆解策略有:
+在实际中,有些二分类学习方法可以直接推广到多分类,但是在大部分情形下,我们利用二分类学习器来解决多分类问题.通常采用的方法是``拆解法'',即将多分类任务拆解成二分类任务.常用的拆解策略有:
 \begin{itemize}
 \item 一对一(One vs. One, OvO):训练$N(N-1)/2$个分类器将$N$个类别两两分开;
 \item 一对其余(One vs. Rest, OvR):训练$N$个分类器,将每个样本与其余的样本分开;
-\item 多对多(Many vs. Many, MvM):常见的有"纠错输出编码"(Error Correcting Output Codes, ECOC)技术.见P65.
+\item 多对多(Many vs. Many, MvM):常见的有``纠错输出编码''(Error Correcting Output Codes, ECOC)技术.见P65.
 \end{itemize}
 
 ECOC工作过程分为两步:编码和解码.在编码过程中,对$N$个类别做$M$次划分,每次划分将一部分类别划为正类,一部分划分为反类;解码过程中,使用$M$个分类器对测试样本进行预测,这些预测标记组成一个编码,然后将预测编码与每个类别各自的编码进行比较,返回距离最小的类别作为最终的预测结果.
@@ -78,7 +78,7 @@ ECOC在码长较小时可以根据这个原则计算出理论最优编码.然而
 \section{类别不平衡问题}
 % ## 3.6 类别不平衡问题
 
-类别不平衡(class-imbalance)就是指分类任务中不同类别的训练样例数目差别很大的情况.从线性分类器角度来看,用$y=\mathbf{w^Tx}+b$对样本$\mathbf x$进行分类时,实际上是用$y$与某一个阈值进行比较.通常用$0.5$作为阈值.但是由于我们通常假设训练集是真实样本总体的无偏采样,因此有如下的"再平衡"策略:
+类别不平衡(class-imbalance)就是指分类任务中不同类别的训练样例数目差别很大的情况.从线性分类器角度来看,用$y=\mathbf{w^Tx}+b$对样本$\mathbf x$进行分类时,实际上是用$y$与某一个阈值进行比较.通常用$0.5$作为阈值.但是由于我们通常假设训练集是真实样本总体的无偏采样,因此有如下的``再平衡''策略:
 
 观测几率就代表了真实几率,设$m^+$和$m^-$分别为正例数目和反例数目,判别形式为
 \begin{equation}\label{eq:rescaling}
@@ -89,5 +89,5 @@ ECOC在码长较小时可以根据这个原则计算出理论最优编码.然而
 \begin{itemize}
 \item 直接对训练集里的反类样例进行欠采样(undersampling)
 \item 对训练集里的正类样例进行过采样(oversampling)
-\item 直接基于原始训练集进行学习,将式(\ref{eq:rescaling})所代表的再平衡策略纳入到决策过程中,称为"阈值移动"(shreshold-moving).
+\item 直接基于原始训练集进行学习,将式(\ref{eq:rescaling})所代表的再平衡策略纳入到决策过程中,称为``阈值移动''(shreshold-moving).
 \end{itemize}

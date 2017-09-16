@@ -6,7 +6,7 @@
 \section{间隔与支持向量}
 % ## 6.1 间隔与支持向量
 
-给定训练样本集$D=\{(\mathbf x_1, y_1),(\mathbf x_2, y_2),\cdots,(\mathbf x_m, y_m)\},y_i\in\{-1,+1\}$,从直观上看,应该去找位于两类样本间的超平面去划分两类样本,而位于两类样本"正中间"的划分超平面泛化性能最好.这就是支持向量机的最核心思想.
+给定训练样本集$D=\{(\mathbf x_1, y_1),(\mathbf x_2, y_2),\cdots,(\mathbf x_m, y_m)\},y_i\in\{-1,+1\}$,从直观上看,应该去找位于两类样本间的超平面去划分两类样本,而位于两类样本``正中间''的划分超平面泛化性能最好.这就是支持向量机的最核心思想.
 
 空间中超平面可以通过
 \begin{equation}
@@ -45,7 +45,7 @@ $\gamma$也被称为间隔.
 \section{对偶问题}
 % ## 6.2 对偶问题
 
-SVM基本型本身一个凸二次规划问题,可以用现成的优化计算包求解.但是还有效率提升的空间.基本思路就是通过拉格朗日乘子法求得其"对偶问题"(dual problem).
+SVM基本型本身一个凸二次规划问题,可以用现成的优化计算包求解.但是还有效率提升的空间.基本思路就是通过拉格朗日乘子法求得其``对偶问题''(dual problem).
 
 该问题的拉格朗日函数可以写为
 \begin{equation}L(\mathbf w, b, \mathbf\alpha)=\frac{1}{2}\|\mathbf w\|^2+\sum_{i=1}^m\alpha_i(1-y_i(\mathbf{w^Tx_i+b}))\end{equation}
@@ -98,18 +98,18 @@ f(\mathbf x)&=\mathbf w^T+b\\
 &=\sum_{i=1}^m\alpha_iy_i\phi(\mathbf x_i)^T\phi(\mathbf x)+b\\
 &=\sum_{i=1}^m\alpha_iy_i\kappa(\mathbf x,\mathbf x_i)+b.
 \end{split}\end{equation}
-上式显示出模型最优解可以通过训练样本的核函数展开,这一展式又被称为"支持向量展式"(support vector expansion).
+上式显示出模型最优解可以通过训练样本的核函数展开,这一展式又被称为``支持向量展式''(support vector expansion).
 
 一些核函数性质可见P128-P129.
 
 \section{软间隔与正则化}
 % ## 6.4 软间隔与正则化
 
-另外一种解决训练样本线性不可分的方法是"软间隔"(soft margin),即允许支持向量机在一些样本上出错.因此,优化目标可以总结为
+另外一种解决训练样本线性不可分的方法是``软间隔''(soft margin),即允许支持向量机在一些样本上出错.因此,优化目标可以总结为
 \begin{equation}\begin{split}
 \min_{\mathbf w,b}\frac{1}{2}\|w\|^2+C\sum_{i=1}^ml_{0/1}(y_i(\mathbf{w^Tx_i}+b)-1)
 \end{split}\end{equation}
-其中$C>0$是一个常数,$l_{0/1}$是"0/1"损失函数
+其中$C>0$是一个常数,$l_{0/1}$是``0/1''损失函数
 \begin{equation}l_{0/1}=\left\{\begin{array}{ll}
 1,\,\text{if}\quad z<0\\
 0,otherwise
@@ -117,7 +117,7 @@ f(\mathbf x)&=\mathbf w^T+b\\
 
 常见的损失函数有hinge损失,指数损失,对率损失(见P130).
 
-采用hinge损失,引入"松弛变量"(slack variables),上式可重写为
+采用hinge损失,引入``松弛变量''(slack variables),上式可重写为
 \begin{equation}\begin{split}
 \min_{\mathbf w,b,\xi}&\frac{1}{2}\|\mathbf w\|^2+C\sum_{i=1}^m\xi_i\\
 \text{s.t.}&\,y_i(\mathbf{w^Tx_i}+b)\ge1-\xi_i\\
@@ -144,6 +144,6 @@ f(\mathbf x)&=\mathbf w^T+b\\
 \section{核方法}
 % ## 6.6 核方法
 
-给定训练样本,不考虑偏移项$b$,则无论SVM还是SVR,学得的模型总能表示成核函数$\kappa(\mathbf{x_i,x_j})$的线性组合.因此有更一般的"表示定理"(representer theorem).P137
+给定训练样本,不考虑偏移项$b$,则无论SVM还是SVR,学得的模型总能表示成核函数$\kappa(\mathbf{x_i,x_j})$的线性组合.因此有更一般的``表示定理''(representer theorem).P137
 
-一般人们通过"核化"(引入核函数)来将线性学习器拓展为非线性学习器.P137-139即以线性判别分析为例,将其进行非线性拓展,得到"核线性判别分析"(Kernelized Linear Discriminant Analysis).
+一般人们通过``核化''(引入核函数)来将线性学习器拓展为非线性学习器.P137-139即以线性判别分析为例,将其进行非线性拓展,得到``核线性判别分析''(Kernelized Linear Discriminant Analysis).

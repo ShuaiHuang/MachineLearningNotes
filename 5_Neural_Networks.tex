@@ -15,14 +15,14 @@ y=f\Big(\sum_{i=1}^nw_ix_i-\theta\Big)
 \section{感知机与多层网络}
 % ## 5.2 感知机与多层网络
 
-感知机(Perceptron)由两层神经元组成,输入层接收外界输入信号传递给输出层,输出层是M-P神经元.需要从训练数据集中训练得到输出层权重$w_i$以及阈值$\theta$.可以将阈值$\theta$看做一个输入权重固定为$-1$的"哑结点"(dummy node),这样权重和阈值的学习过程就可以归一化为权重的学习.对于训练样例$(\mathbf x,y)$,当前感知机的输出为$\hat y$,则感知机权重调整策略为\footnote{这里是感知机权重调整策略}
+感知机(Perceptron)由两层神经元组成,输入层接收外界输入信号传递给输出层,输出层是M-P神经元.需要从训练数据集中训练得到输出层权重$w_i$以及阈值$\theta$.可以将阈值$\theta$看做一个输入权重固定为$-1$的``哑结点''(dummy node),这样权重和阈值的学习过程就可以归一化为权重的学习.对于训练样例$(\mathbf x,y)$,当前感知机的输出为$\hat y$,则感知机权重调整策略为\footnote{这里是感知机权重调整策略}
 \begin{equation}\begin{split}
 w_i&\leftarrow w_i+\bigtriangleup w_i \\
 \bigtriangleup w_i&=\eta(y-\hat y)x_i
 \end{split}\end{equation}
 其中$\eta\in (0,1)$称为学习率.
 
-感知机只有输出层神经元进行激活函数处理,学习能力非常有限.要解决非线性可分问题,就要使用多层功能神经元,通常使用的是"多层前馈神经网络".
+感知机只有输出层神经元进行激活函数处理,学习能力非常有限.要解决非线性可分问题,就要使用多层功能神经元,通常使用的是``多层前馈神经网络''.
 
 \section{误差逆传播算法}
 % ## 5.3 误差逆传播算法
@@ -34,18 +34,18 @@ w_i&\leftarrow w_i+\bigtriangleup w_i \\
 BP神经网络经常遭遇过拟合,有两种策略可以解决过拟合问题:
 
 \begin{itemize}
-\item "早停"(early stopping):将数据分为训练集和验证集,若训练集误差降低但是验证集误差升高,则停止训练;
-\item "正则化"(regularization):将误差目标函数中增加一个用于描述网络复杂度的部分.
+\item ``早停''(early stopping):将数据分为训练集和验证集,若训练集误差降低但是验证集误差升高,则停止训练;
+\item ``正则化''(regularization):将误差目标函数中增加一个用于描述网络复杂度的部分.
 \end{itemize}
 
 \section{全局最小与局部极小}
 % ## 5.4 全局最小与局部极小
 
-基于梯度的搜索是使用最为广泛的参数寻优方法.如果误差函数具有多个局部极小,则不能保证找到的解是全局最小.通常采用的"跳出"局部极小的方法有:
+基于梯度的搜索是使用最为广泛的参数寻优方法.如果误差函数具有多个局部极小,则不能保证找到的解是全局最小.通常采用的``跳出''局部极小的方法有:
 
 \begin{itemize}
 \item 以多组不同参数值初始化多个神经网络,从中选取更有可能获得更接近全局极小值的结果;
-\item 使用"模拟退火"(stimulated annealing)技术,在每一步以一定的概率接受比当前解更差的结果;
+\item 使用``模拟退火''(stimulated annealing)技术,在每一步以一定的概率接受比当前解更差的结果;
 \item 使用随机梯度下降.
 \end{itemize}
 
@@ -66,7 +66,7 @@ RBF(Radial Basis Function,径向基函数)是一种单隐层前馈神经网络,�
 
 竞争型学习(competitive learning)是神经网络中一种常用的无监督学习策略.网络的输出神经元相互竞争,每一时刻仅有一个竞争获胜的神经元被激活,其他神经元状态被抑制.
 
-ART网络比较好地缓解了竞争型学习中的"可塑性-稳定性窘境"(stability-plasticity dilemma),这就使得ART网络具有一个很重要的优点:可进行增量学习(incremental learning)或在线学习(online learning).
+ART网络比较好地缓解了竞争型学习中的``可塑性-稳定性窘境''(stability-plasticity dilemma),这就使得ART网络具有一个很重要的优点:可进行增量学习(incremental learning)或在线学习(online learning).
 
 \subsection{SOM网络}
 % ### 5.5.3 SOM网络
@@ -81,12 +81,12 @@ SOM(Self-Organizing Map,自组织映射)网络是一种竞争学习型无监督�
 \subsection{Elman网络}
 % ### 5.5.5 Elman网络
 
-"递归神经网络"(recurrent neural networks)允许网络中出现环形结构,从而能处理与时间有关的动态变化.
+``递归神经网络''(recurrent neural networks)允许网络中出现环形结构,从而能处理与时间有关的动态变化.
 
 \subsection{Boltzmann机}
 % ### 5.5.6 Boltzmann机
 
-Boltzmann机是一种"基于能量的模型"(energy-based model):它将网络状态定义一个"能量",能量最小化时网络达到理想状态,而网络的训练就是在最小化这个能量函数.
+Boltzmann机是一种``基于能量的模型''(energy-based model):它将网络状态定义一个``能量'',能量最小化时网络达到理想状态,而网络的训练就是在最小化这个能量函数.
 
 Boltzmann机中的神经元都是布尔型的,状态$1$表示激活,状态$0$表示抑制.令向量$\mathbf s\in\{0,1\}^n$表示$n$个神经元的状态,$w_{ij}$表示神经元$i$与$j$之间的连接权,$\theta_i$表示神经元$i$的阈值,则状态$\mathbf s$所对应的Boltzmann机能量定义为
 \begin{equation}
@@ -94,13 +94,13 @@ E(\mathbf s)=-\sum_{i=1}^{n-1}\sum_{j=i+1}^nw_{ij}s_is_j-\sum_{i=1}^n\theta_is_i
 
 标准Boltzmann机是一个全连接图,难以解决实际任务,通常采用受限Boltzmann机解决实际问题.受限Boltzmann机仅保留了显层与隐层之间的连接,从而将Boltzmann机结构由完全图简化为二部图.
 
-受限Boltzmann机常用"对比散度"(Contrastive Divergence)算法来进行训练.
+受限Boltzmann机常用``对比散度''(Contrastive Divergence)算法来进行训练.
 
 \section{深度学习}
 % ## 5.6 深度学习
 
 多隐层神经网络难以使用经典算法进行训练,因为误差在多隐层内逆传播时,往往会发散而不能收敛到稳定状态.
 
-无监督逐层训练(unsupervised layer-wise training)是多隐层网络训练的有效手段,其基本思想是每次训练一层隐结点,而本层隐结点的输出作为下一层隐结点的输入,这称为"预训练"(pre-training);在预训练全部完成后,再对整个网络进行"微调"(fine-tuning)训练.
+无监督逐层训练(unsupervised layer-wise training)是多隐层网络训练的有效手段,其基本思想是每次训练一层隐结点,而本层隐结点的输出作为下一层隐结点的输入,这称为``预训练''(pre-training);在预训练全部完成后,再对整个网络进行``微调''(fine-tuning)训练.
 
-另一种节省训练开销的策略是"权共享"(weight sharing),即让一组神经元使用相同的连接权.
+另一种节省训练开销的策略是``权共享''(weight sharing),即让一组神经元使用相同的连接权.

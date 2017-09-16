@@ -4,15 +4,15 @@
 \section{子集搜索与评价}
 % ## 11.1 子集搜索与评价
 
-我们将属性称为"特征"(feature),对当前学习任务有用的属性称为"相关特征"(relevant feature),没什么用的属性称为"无关特征"(irrelevant feature).从给定的特征集合中选择出相关特征子集的过程叫做"特征选择"(feature selection).
+我们将属性称为``特征''(feature),对当前学习任务有用的属性称为``相关特征''(relevant feature),没什么用的属性称为``无关特征''(irrelevant feature).从给定的特征集合中选择出相关特征子集的过程叫做``特征选择''(feature selection).
 
-特征选择是一个重要的"数据预处理"(data preprocessing)过程.进行特征选择的原因有:第一,避免维数灾难;第二,去除不相关的特征降低学习任务难度.需要取出的特征有两种:第一种是无关特征,第二种是冗余特征(需要视情况而定).
+特征选择是一个重要的``数据预处理''(data preprocessing)过程.进行特征选择的原因有:第一,避免维数灾难;第二,去除不相关的特征降低学习任务难度.需要取出的特征有两种:第一种是无关特征,第二种是冗余特征(需要视情况而定).
 
 选取特征子集的问题是一个NP难问题,因此不能通过随机搜索方法来求得最优解.为了通过启发式搜索来获得次优解,需要解决两个问题:第一,如何根据评价结果选取下一个特征子集;第二,如何评价候选特征子集.
 
-对于第一个"子集搜索"(subset search)问题,采用贪心算法进行特征子集的搜索,通常使用的策略有:"前向"(foward)搜索,"后向"(backward)搜索和"双向"(bidirection)搜索,但是这些搜索策略并未考虑特征之间的关联.
+对于第一个``子集搜索''(subset search)问题,采用贪心算法进行特征子集的搜索,通常使用的策略有:``前向''(foward)搜索,``后向''(backward)搜索和``双向''(bidirection)搜索,但是这些搜索策略并未考虑特征之间的关联.
 
-对于第二个"子集评价"(subset evalution)问题,只要评估特征子集划分的信息增益即可.设$\mathcal{D}$是样本集合;$p_i$是$\mathcal{D}$中第$i$类样本所占比例.对于属性子集$A$,根据取值将$\mathcal{D}$划分为$\{\mathcal{D}^1,\mathcal{D}^2,\dots,\mathcal{D}^V\}$,则属性子集增益为
+对于第二个``子集评价''(subset evalution)问题,只要评估特征子集划分的信息增益即可.设$\mathcal{D}$是样本集合;$p_i$是$\mathcal{D}$中第$i$类样本所占比例.对于属性子集$A$,根据取值将$\mathcal{D}$划分为$\{\mathcal{D}^1,\mathcal{D}^2,\dots,\mathcal{D}^V\}$,则属性子集增益为
 \begin{equation}
 Gain(A)=Ent(\mathcal{D})-\sum_{i=1}^V\frac{|\mathcal{D}^i|}{|\mathcal{D}|}Ent(\mathcal{D}^i)
 \end{equation}
@@ -27,7 +27,7 @@ Gain(A)=Ent(\mathcal{D})-\sum_{i=1}^V\frac{|\mathcal{D}^i|}{|\mathcal{D}|}Ent(\m
 
 过滤式特征选择先对特征集合进行特征选择,然后再训练学习器,特征选择过程与后续学习器训练过程无关.
 
-Relief特征选择方法是过滤式的特征选择方法,该方法使用"相关统计量"来度量特征的重要性.假设有训练集$\{(\mathbf{x}_1, y_1),(\mathbf{x}_2, y_2),\dots,(\mathbf{x}_m, y_m)\}$,对于每个实例$\mathbf{x}_i$,Relief先在$\mathbf{x}_i$的同类样本中寻找其最近邻$\mathbf{x}_{i,nh}$,称为"猜中近邻"(near-hit);再从异类中寻找其最近邻$\mathbf{x}_{i,nm}$,称为"猜错近邻"(near-miss),则相关统计量对应于属性$j$的分量为
+Relief特征选择方法是过滤式的特征选择方法,该方法使用``相关统计量''来度量特征的重要性.假设有训练集$\{(\mathbf{x}_1, y_1),(\mathbf{x}_2, y_2),\dots,(\mathbf{x}_m, y_m)\}$,对于每个实例$\mathbf{x}_i$,Relief先在$\mathbf{x}_i$的同类样本中寻找其最近邻$\mathbf{x}_{i,nh}$,称为``猜中近邻''(near-hit);再从异类中寻找其最近邻$\mathbf{x}_{i,nm}$,称为``猜错近邻''(near-miss),则相关统计量对应于属性$j$的分量为
 \begin{equation}
 \delta^j=\sum_i-\text{diff}(x_i^j,x_{i,nh}^j)^2+\text{diff}(x_i^j,x_{i,nm}^j)^2
 \end{equation}
@@ -61,7 +61,7 @@ LVW(Las Vegas Wrapper)是在拉斯维加斯框架下使用随机策略进行搜�
 \begin{equation}
 \min_{\mathbf{w}}\sum_{i=1}^m(y_i-\mathbf{w^Tx_i})^2+\lambda\|\mathbf{w}\|_1
 \end{equation}
-相比于岭回归,LASSO更容易获得"稀疏"(sparse)解.这意味着$\mathbf{w}$的非零分量对应的特征最终才在模型中得以体现,即进行了特征选择.
+相比于岭回归,LASSO更容易获得``稀疏''(sparse)解.这意味着$\mathbf{w}$的非零分量对应的特征最终才在模型中得以体现,即进行了特征选择.
 
 求解$L1$正则化问题可使用近端梯度下降(Proximal Gradient Descent, PGD)方法.对优化目标
 \begin{equation}
@@ -104,7 +104,7 @@ x_{k+1}^i&={\arg\min}_{x^i}\frac{L}{2}(x^{i2}-2x^iz^i+z^{i2})+\lambda|x^i|\\
 
 特征选择所考虑的问题是特征具有稀疏性,即从特征集中选择出与学习任务相关的特征子集.但是从另外一个角度来看,如果训练样本对应的特征向量具有稀疏性,那么在高维空间中样本分布就有可能线性可分,学习器可能会取得较好的性能.此外,由于样本是稀疏的,计算和存储的开销会比较小.
 
-由于稀疏特征具有以上的优点,因此,如何学习出一个"字典",为稠密表达的样本转化为稀疏形式,是"字典学习"(directoinary learning),又称"稀疏编码"(sparse coding)所要解决的问题.
+由于稀疏特征具有以上的优点,因此,如何学习出一个``字典'',为稠密表达的样本转化为稀疏形式,是``字典学习''(directoinary learning),又称``稀疏编码''(sparse coding)所要解决的问题.
 
 给定数据集$\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_m\}$,稀疏编码的模型为
 \begin{equation}
@@ -142,9 +142,9 @@ x_{k+1}^i&={\arg\min}_{x^i}\frac{L}{2}(x^{i2}-2x^iz^i+z^{i2})+\lambda|x^i|\\
 
 更进一步,若$\mathbf{s}$具有稀疏性,这个问题就很好解.实际上,获得稀疏解$\mathbf{s}$的途径有很多.
 
-通常认为,压缩感知分为"感知测量"和"重构恢复"两个阶段.前者是将原始信号进行处理以获得稀疏表示的过程;后者是从稀疏表示中恢复出原始信号的过程.
+通常认为,压缩感知分为``感知测量''和``重构恢复''两个阶段.前者是将原始信号进行处理以获得稀疏表示的过程;后者是从稀疏表示中恢复出原始信号的过程.
 
-压缩感知中一个重要的原理是"限定等距性"(Restricted Isometry Property, RIP):对于$n\times m(n\ll m)$的矩阵$\mathbf{A}$,若存在常数$\delta_k\in(0,1)$,使得对于任意向量$\mathbf{s}$和$\mathbf{A}_k\in\mathbb{R}^{n\times k}$有
+压缩感知中一个重要的原理是``限定等距性''(Restricted Isometry Property, RIP):对于$n\times m(n\ll m)$的矩阵$\mathbf{A}$,若存在常数$\delta_k\in(0,1)$,使得对于任意向量$\mathbf{s}$和$\mathbf{A}_k\in\mathbb{R}^{n\times k}$有
 \begin{equation}
 (1-\delta_k)\|\mathbf{s}\|_2^2\le \|\mathbf{A}_k\mathbf{s}\|_2^2\le (1+\delta_k)\|\mathbf{s}\|_2^2
 \end{equation}
