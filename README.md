@@ -1,6 +1,6 @@
 This repository is used for storing the reading notes on [*Machine Learning*](https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B01ARKEV1G/ref=sr_1_1?ie=UTF8&qid=1495374863&sr=8-1&keywords=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0), written by Zhihua ZHOU.
 
-For better reading experience, anyone can read it either on my [blog](http://shuaihuang.github.io/Machine-Learning-Reading-Notes/) or via downloading [pdf](https://github.com/ShuaiHuang/MachineLearningNotes/blob/LaTexDraft/book-template.pdf) version. But the later one will be updated more frequently.
+For better reading experience, anyone can read it either on my [blog](http://shuaihuang.github.io/Machine-Learning-Reading-Notes/) or via downloading [pdf](https://github.com/ShuaiHuang/MachineLearningNotes/blob/LaTexDraft/Machine-Learning-Reading-Note.pdf) version. But the later one will be updated more frequently.
 
 Issues and pull requests are welcomed. Or you can contact me via my email which can be found in my profile page on GitHub.
 
