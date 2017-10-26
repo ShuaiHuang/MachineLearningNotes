@@ -103,11 +103,11 @@ ECOC在码长较小时可以根据这个原则计算出理论最优编码.然而
     \hline
     \textbf{模型} & \textbf{损失函数} & \textbf{优化过程} & \textbf{判别函数} \\ 
     \hline
-    线性模型&均方误差MSE&存在闭式解&$f(\bm x)=\bm w^T\bm x+b$\\
+    线性模型&均方误差MSE&最小二乘法，有闭式解&$f(\bm x)=\bm w^T\bm x+b$\\
     \hline
-    Logistic回归&&极大似然度估计&\\
+    Logistic回归&最大化对数似然&梯度下降法,牛顿法等&\\
     \hline
-    线性判别分析&&&\\
+    线性判别分析&广义瑞利商&拉格朗日乘子法&\\
     \hline
 \end{tabular}
 \end{table}
