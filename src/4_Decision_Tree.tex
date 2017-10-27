@@ -101,3 +101,23 @@ CART决策树使用``基尼指数''(Gini index)来选择划分属性,数据集$D
 若把每个属性视为坐标空间中的一个坐标轴,则$d$个属性描述的样本就对应了$d$维空间中的一个数据点,决策树就是在这些数据点集合中寻找一个分类边界.决策树所形成的边界有一个特点即分类边界平行于坐标轴.
 
 如果样本集合分布较为复杂,则需要较多的分类边界去拟合真实的分类边界.若能使用斜的分类边界,则决策树模型将大为简化.``多变量决策树''(multivariate decision tree)就是能实现这样的``斜划分''甚至更复杂划分的决策树.
+
+\section*{总结}
+
+决策树的生成过程是一个递归的过程,每一次都需要从当前的属性集中选取出一个属性(也有选取多个属性的算法,这里不做展开.),按照不同的属性值将对应的样本划分到对应的子节点中.一般我们希望划分出的子节点的熵要比父节点的熵低,这里就涉及到一个属性选取标准.
+
+\begin{table}[bht]
+    \caption{子节点属性划分标准}
+    \centering
+    \begin{tabular}{|p{3cm}|p{6.5cm}|p{2.5cm}|}
+    \hline
+        决策树生成算法&属性划分标准&备注\\
+    \hline
+        ID3&信息增益$\text{Gain}(D,a)=\text{Ent}(D)-\sum_{v=1}^V\frac{|D^v|}{|D|}\text{Ent}(D^v)$&对取值数目较多的属性有偏好\\
+    \hline
+        C4.5&增益率$\text{Gain\_ratio}(D,a)=\frac{\text{Gain}(D,a)}{\text{IV}(a)}$,其中$\text{IV}(a)=-\sum_{v=1}^V\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}$&对取值数目较少的属性有所偏好\\
+    \hline
+        CART&基尼指数$\text{Gini\_index}(D,a)=\sum_{v=1}{V}\frac{D^v}{D}\text{Gini}(D,a)$,其中$\text{Gini}(D)=\sum_{k=1}^{|\mathcal Y|}\sum_{k'\ne k}p_kp_{k'}=1-\sum_{k=1}^{|\mathcal Y|}p_k^2$&分类和回归任务都适用\\
+    \hline
+    \end{tabular}
+\end{table}
