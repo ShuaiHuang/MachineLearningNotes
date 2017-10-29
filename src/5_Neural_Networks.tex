@@ -20,7 +20,7 @@ y=f\Big(\sum_{i=1}^nw_ix_i-\theta\Big)
 w_i&\leftarrow w_i+\bigtriangleup w_i \\
 \bigtriangleup w_i&=\eta(y-\hat y)x_i
 \end{split}\end{equation}
-其中$\eta\in (0,1)$称为学习率.
+其中$\eta\in (0,1)$称为学习率,$x_i$是$\bm x$的对应于第$i$个输入神经元的分量\footnote{感知器学习策略见总结部分}.
 
 感知机只有输出层神经元进行激活函数处理,学习能力非常有限.要解决非线性可分问题,就要使用多层功能神经元,通常使用的是``多层前馈神经网络''.
 
@@ -104,3 +104,26 @@ E(\mathbf s)=-\sum_{i=1}^{n-1}\sum_{j=i+1}^nw_{ij}s_is_j-\sum_{i=1}^n\theta_is_i
 无监督逐层训练(unsupervised layer-wise training)是多隐层网络训练的有效手段,其基本思想是每次训练一层隐结点,而本层隐结点的输出作为下一层隐结点的输入,这称为``预训练''(pre-training);在预训练全部完成后,再对整个网络进行``微调''(fine-tuning)训练.
 
 另一种节省训练开销的策略是``权共享''(weight sharing),即让一组神经元使用相同的连接权.
+
+\section*{总结}
+
+\subsection*{感知器学习策略推导}
+
+感知器的损失函数的一种选择是\textbf{所有误分类点到判别平面的总距离},即有
+\begin{equation}
+    -\frac{1}{\|w\|}\sum_{x_i\in M}y_i(w\cdot x_i+b)
+\end{equation}
+其中$M$是所有误分类点的集合.通常不考虑$\frac{1}{\|w\|}$,通过使得损失函数\ref{eq:perceptron_loss_func}最小化获得参数$w,b$:
+\begin{equation}\label{eq:perceptron_loss_func}
+    \min_{w,b}\,L(w,b)=-\sum_{x_i\in M}y_i(w\cdot x_i+b)
+\end{equation}
+则有
+\begin{equation}\begin{split}
+    \nabla_w\,L(w,b)&=-\sum_{x_i\in M}y_ix_i\\
+    \nabla_b\,L(w,b)&=-\sum_{x_i\in M}y_i
+\end{split}\end{equation}
+根据上式中梯度可以对$w,b$进行更新
+\begin{equation}\begin{split}
+    w&\leftarrow w+\eta y_ix_i\\
+    b&\leftarrow b+\eta y_i
+\end{split}\end{equation}
