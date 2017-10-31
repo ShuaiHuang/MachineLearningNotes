@@ -29,7 +29,7 @@ w_i&\leftarrow w_i+\bigtriangleup w_i \\
 
 要训练多层神经网络,最常用的是学习算法是误差逆传播(error BackPropagation, BP)算法.误差逆传播算法对\textbf{均方误差}求取目标的负梯度方向对参数进行调整\footnote{广义感知器学习规则},调整方向为从输出层开始逐步调整到输入层\footnote{链式求导法则}.
 
-标准BP算法每次针对一个训练样本进行参数优化,更新频率较快.为了解决这一问题,使用累积BP算法,即对所有样本求取累积均方误差,然后更新一次参数.
+\textit{标准BP算法}每次针对一个训练样本进行参数优化,更新频率较快.为了解决这一问题,使用\textit{累积BP算法},即对所有样本求取累积均方误差,然后更新一次参数.
 
 BP神经网络经常遭遇过拟合,有两种策略可以解决过拟合问题:
 
@@ -59,7 +59,10 @@ BP神经网络经常遭遇过拟合,有两种策略可以解决过拟合问题:
 \subsection{RBF网络}
 % ### 5.5.1 RBF网络
 
-RBF(Radial Basis Function,径向基函数)是一种单隐层前馈神经网络,它使用径向基函数作为隐层神经元激活函数.具有足够多隐层神经元的RBF网络能以任意精度逼近任意连续函数.
+RBF(Radial Basis Function,径向基函数)是一种单隐层前馈神经网络,它使用径向基函数$\rho(\bm x,\bm c_i)$作为隐层神经元激活函数.具有足够多隐层神经元的RBF网络能以任意精度逼近任意连续函数.常用的高斯径向基函数形如
+\begin{equation}
+    \rho(\bm x,\bm c_i)=e^{-\beta_i\|\bm x-\bm c_i\|^2}
+\end{equation}
 
 \subsection{ART网络}
 % ### 5.5.2 ART网络
@@ -113,7 +116,7 @@ E(\mathbf s)=-\sum_{i=1}^{n-1}\sum_{j=i+1}^nw_{ij}s_is_j-\sum_{i=1}^n\theta_is_i
 \begin{equation}
     -\frac{1}{\|w\|}\sum_{x_i\in M}y_i(w\cdot x_i+b)
 \end{equation}
-其中$M$是所有误分类点的集合.通常不考虑$\frac{1}{\|w\|}$,通过使得损失函数\ref{eq:perceptron_loss_func}最小化获得参数$w,b$:
+其中$M$是所有误分类点的集合.通常不考虑$\frac{1}{\|w\|}$,通过使得损失函数(式\ref{eq:perceptron_loss_func})最小化获得参数$w,b$:
 \begin{equation}\label{eq:perceptron_loss_func}
     \min_{w,b}\,L(w,b)=-\sum_{x_i\in M}y_i(w\cdot x_i+b)
 \end{equation}
@@ -127,3 +130,4 @@ E(\mathbf s)=-\sum_{i=1}^{n-1}\sum_{j=i+1}^nw_{ij}s_is_j-\sum_{i=1}^n\theta_is_i
     w&\leftarrow w+\eta y_ix_i\\
     b&\leftarrow b+\eta y_i
 \end{split}\end{equation}
+
