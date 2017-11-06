@@ -1,10 +1,8 @@
 \chapter{贝叶斯分类器}
-% # 【《机器学习》第7章】贝叶斯分类器
 
 % 工作之后每天学习时间缩短了不少，为了保证学习质量，每天学习完相应的章节之后，对当天所学的内容整理出脉络，形成反馈，保证学习质量。学习的教材为周志华所著的《机器学习》。
 
 \section{贝叶斯判别核心}
-% ## 7.1 贝叶斯判别核心
 
 最小化错误率贝叶斯分类器定义为
 \begin{equation}
@@ -26,13 +24,12 @@ h^\ast(\bm x)=argmax_{c\in \mathcal Y}P(c|\bm{x})
     \item 问题是如何得出$P(\bm{x}|c)$，进而推导出后验概率$P(c|\bm{x})$
 \end{itemize}
 
-\section{极大似然估计（频率主义学派）}
-% ## 7.2 极大似然估计（频率主义学派）
+\section{极大似然估计}
+\underline{频率主义学派}
 
 估计条件概率的一种常用策略是先假定具有某种确定的概率分布形式,然后基于训练样本对概率分布的参数进行估计.
 
 \paragraph{频率主义学派与贝叶斯学派之争}
-% ### 频率主义学派与贝叶斯学派之争
 
 \begin{itemize}
 \item 频率主义学派观点：模型参数是一个客观固定值
@@ -41,7 +38,6 @@ h^\ast(\bm x)=argmax_{c\in \mathcal Y}P(c|\bm{x})
 \end{itemize}
 
 \paragraph{极大似然估计}
-% ### 极大似然估计
 
 \begin{itemize}
 \item 最优模型参数$\bm{\theta_c}$一定是能够让当前观察值以最大概率出现的参数
@@ -50,8 +46,8 @@ h^\ast(\bm x)=argmax_{c\in \mathcal Y}P(c|\bm{x})
 \item 极大似然估计缺点模型必须准确，如果模型不准确，即使参数准确，也有可能出现偏差。即数据潜在分布规律必须要与估计分布相一致
 \end{itemize}
 
-\section{朴素贝叶斯分类器（贝叶斯学派）}
-% ## 7.3 朴素贝叶斯模型（贝叶斯学派）
+\section{朴素贝叶斯分类器}
+\underline{贝叶斯学派}
 
 \begin{itemize}
 \item $P(\bm{x}|c)$是所有属性值上的联合分布，对其进行估计存在一定的困难
@@ -66,16 +62,15 @@ h^\ast(\bm x)=argmax_{c\in \mathcal Y}P(c|\bm{x})
 \end{itemize}
 
 \section{半朴素贝叶斯分类器}
-% ## 7.4 半朴素贝叶斯分类器
 
 \begin{itemize}
-\item 朴素贝叶斯分类器的前提条件为：所有属性之间相互独立。然而这一条件在实际中很难被满足，由此，半朴素贝叶斯分类器（semi-na$\ddot{i}$ve bayesian classifiers）被提出，用以改进朴素贝叶斯前提条件中的限制性因素。半朴素贝叶斯分类器适当考虑一部分属性间的依赖信息.
+\item 朴素贝叶斯分类器的前提条件为：所有属性之间相互独立。然而这一条件在实际中很难被满足，由此，半朴素贝叶斯分类器（semi-na\"ive bayesian classifiers）被提出，用以改进朴素贝叶斯前提条件中的限制性因素。半朴素贝叶斯分类器适当考虑一部分属性间的依赖信息.
 \item One Dependent Estimator(ODE)即独依赖估计是半朴素贝叶斯分类器的一个常用策略。独依赖估计是指每一个因素在类别之外至多仅依赖一项其他因素。
 \begin{equation}
 P(c|\bm{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
 \end{equation}
 \item Super Parent ODE(SPODE)即超父独依赖估计假定所有的属性都依赖于同一个父属性
-\item Tree Augmented naive bayesian(TAN)通过最大带权生成树算法的基础上，通过以下步骤对属性间依赖关系进行简化
+\item Tree Augmented na\"ive bayesian(TAN)通过最大带权生成树算法的基础上，通过以下步骤对属性间依赖关系进行简化
     \begin{enumerate}
     \item 计算两两属性间的条件互信息
     \begin{equation}I(x_i,x_j|y)=\sum_{x_i,x_j,c\in\mathcal{Y}}P(x_i,x_j|c)\log\frac{P(x_i,x_j|c)}{P(x_i|c)P(x_j|c)}
@@ -101,7 +96,6 @@ P(c|\bm{x})\propto P(c)\prod_{i=1}^dP(x_i|c,pa_i)
 \end{itemize}
 
 \section{贝叶斯网}
-% ## 7.5 贝叶斯网
 
 \begin{itemize}
 \item 贝叶斯网亦称信念网(belief network)，使用有向非环图（Directed Acyclic Graph）来说明各个属性之间的依赖关系。
@@ -112,7 +106,6 @@ G=<B|\Theta>
 \end{itemize}
 
 \subsection{结构}
-% ### 7.5.1 结构
 
 \begin{itemize}
 \item 贝叶斯网有效表达出了属性间的条件独立性（给定父节点集，每个节点与其非后裔节点相互独立）
@@ -142,7 +135,6 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
 \end{itemize}
 
 \subsection{学习}
-% ### 7.5.2 学习
 
 \begin{itemize}
 \item 学习过程包括学习贝叶斯网络结构$B$和网络参数$\Theta$，在$B$确定的情况下，$\Theta$可以通过计算样本频率进行确定。所以首要目的是学习网络结构$B$。
@@ -161,7 +153,6 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
 \end{itemize}
 
 \subsection{推断}
-% ### 7.5.3 推断
 
 \begin{itemize}
 \item 在得出网络结构之后，最精确的做法是求出联合概率分布，进而得出后验概率。但是在网络结构比较复杂的情况下，计算量非常大，不容易实现。
@@ -179,7 +170,6 @@ P_B(x_1,x_2,\dots,x_n)=\prod_{i=1}^{d}P_B(x_i|\pi_i)=\prod_{i=1}^d\theta_{x_i|\p
 \end{itemize}
 
 \section{EM算法}
-% ## 7.6 EM算法
 
 \begin{itemize}
 \item 在某些变量未被观测到的情况下，直接做最大似然估计，则需要做边际最大似然\begin{equation}L(\bm\Theta|\mathbf X)=\ln P(\mathbf X|\bm\Theta)=\ln \sum_{\mathbf Z}P(\mathbf{X,Z}|\bm\Theta)\end{equation}
