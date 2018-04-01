@@ -27,9 +27,9 @@ P(err)&=1-\sum_{C\in\mathcal{Y}}P(c|\mathbf{x})P(c|\mathbf{z})\\&\simeq 1-\sum_{
 若在降维的过程中要求原始样本空间中的距离在低维空间中得以保存,就得到了``多维缩放''(Multiple Dimensional Scaling)降维方法.
 
 定义:  
-$\mathbf{D}\in\mathbb{R}^{m\times m}$:$m$个样本原始空间距离矩阵;  
-$\mathbf{Z}\in\mathbb{R}^{d'\times m}$:降维后中心化的样本;  
-$\mathbf{B}=\mathbf{Z^TZ}\in\mathbb{R}^{m\times m}$:降维后的内积矩阵.
+$\mathbf{D}\in\mathbbm{R}^{m\times m}$:$m$个样本原始空间距离矩阵;  
+$\mathbf{Z}\in\mathbbm{R}^{d'\times m}$:降维后中心化的样本;  
+$\mathbf{B}=\mathbf{Z^TZ}\in\mathbbm{R}^{m\times m}$:降维后的内积矩阵.
 
 样本$i$与样本$j$之间距离的平方(降维前后相等)
 \begin{equation}\begin{split}
@@ -38,7 +38,7 @@ dist_{ij}^2&=\|\mathbf{z_i}\|^2+\|\mathbf{z_j}\|^2-2\mathbf{z_i^Tz_j}\\
 \end{split}\end{equation}
 经过代换得$b_{ij}=-\frac{1}{2}(dist_{ij}^2-dist_{i\cdot}^2-dist_{\cdot j}^2+dist_{\cdot\cdot}^2)$,由此求得$\mathbf{B}$,对$\mathbf{B}$做特征值分解$\mathbf{B=V\Lambda V^T}$,选取出其中的$d^\ast$个非零特征值有
 \begin{equation}
-\mathbf{Z=\Lambda_{\ast}^{\frac{1}{2}}V_{\ast}^T}\in\mathbb{R}^{d^\ast\times m}
+\mathbf{Z=\Lambda_{\ast}^{\frac{1}{2}}V_{\ast}^T}\in\mathbbm{R}^{d^\ast\times m}
 \end{equation}
 其中,$\Lambda=diag(\lambda_1, \lambda_2, \dots, \lambda_d)$是特征对角矩阵;$\mathbf{V}$是特征向量矩阵.
 
@@ -154,4 +154,4 @@ dist_{mah}(\mathbf{x}_i, \mathbf{x}_j)&=(\mathbf{x}_i -\mathbf{x}_j)^T\mathbf{M}
 
 除了把错误率作为度量学习的目标,还能在度量学习中引入领域知识,如定义``必连''(must-link)约束集合与``勿连''(cannot-link)约束集合.
 
-若学习得到的$\mathbf{M}$是一个低秩矩阵,通过对$\mathbf{M}$进行特征值分解,找到一组正交基,数目为$rank(\mathbf{M})$,小于属性数目$d$.于是度量学习的结果可以衍生出一个降维矩阵$P\in\mathbb{R}^{d\times Rank(\mathbf{M})}$用于降维.
+若学习得到的$\mathbf{M}$是一个低秩矩阵,通过对$\mathbf{M}$进行特征值分解,找到一组正交基,数目为$rank(\mathbf{M})$,小于属性数目$d$.于是度量学习的结果可以衍生出一个降维矩阵$P\in\mathbbm{R}^{d\times Rank(\mathbf{M})}$用于降维.

@@ -132,19 +132,19 @@ x_{k+1}^i&={\arg\min}_{x^i}\frac{L}{2}(x^{i2}-2x^iz^i+z^{i2})+\lambda|x^i|\\
 \begin{equation}
 \mathbf{y=\Phi x}
 \end{equation}
-其中$\Phi\in \mathbb{R}^{n\times m}$是对信号$\mathbf{x}$的测量矩阵.
+其中$\Phi\in \mathbbm{R}^{n\times m}$是对信号$\mathbf{x}$的测量矩阵.
 
-不妨假定存在某个线性变换$\Psi\in\mathbb{R}^{m\times m}$,使得$\mathbf{x}$可表示为
+不妨假定存在某个线性变换$\Psi\in\mathbbm{R}^{m\times m}$,使得$\mathbf{x}$可表示为
 \begin{equation}
 \mathbf{y=\Phi\Psi s=As}
 \end{equation}
-其中$\mathbf{A=\Phi\Psi}\in\mathbb{R}^{n\times m}$.于是,若能根据$\mathbf{y}$恢复出$\mathbf{s}$,则可通过$\mathbf{x=\Psi s}$来恢复出信号$\mathbf{x}$.
+其中$\mathbf{A=\Phi\Psi}\in\mathbbm{R}^{n\times m}$.于是,若能根据$\mathbf{y}$恢复出$\mathbf{s}$,则可通过$\mathbf{x=\Psi s}$来恢复出信号$\mathbf{x}$.
 
 更进一步,若$\mathbf{s}$具有稀疏性,这个问题就很好解.实际上,获得稀疏解$\mathbf{s}$的途径有很多.
 
 通常认为,压缩感知分为``感知测量''和``重构恢复''两个阶段.前者是将原始信号进行处理以获得稀疏表示的过程;后者是从稀疏表示中恢复出原始信号的过程.
 
-压缩感知中一个重要的原理是``限定等距性''(Restricted Isometry Property, RIP):对于$n\times m(n\ll m)$的矩阵$\mathbf{A}$,若存在常数$\delta_k\in(0,1)$,使得对于任意向量$\mathbf{s}$和$\mathbf{A}_k\in\mathbb{R}^{n\times k}$有
+压缩感知中一个重要的原理是``限定等距性''(Restricted Isometry Property, RIP):对于$n\times m(n\ll m)$的矩阵$\mathbf{A}$,若存在常数$\delta_k\in(0,1)$,使得对于任意向量$\mathbf{s}$和$\mathbf{A}_k\in\mathbbm{R}^{n\times k}$有
 \begin{equation}
 (1-\delta_k)\|\mathbf{s}\|_2^2\le \|\mathbf{A}_k\mathbf{s}\|_2^2\le (1+\delta_k)\|\mathbf{s}\|_2^2
 \end{equation}

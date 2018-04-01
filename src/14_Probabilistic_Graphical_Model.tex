@@ -146,13 +146,13 @@ P(x_i)\propto\prod_{k\in n(i)}m_{ki}(x_i)
 
 具体来说,假定我们的目标是计算函数$f(x)$在概率密度函数$p(x)$下的期望
 \begin{equation}
-\mathbb E_p[f]=\int f(x)p(x)dx
+\mathbbm E_p[f]=\int f(x)p(x)dx
 \end{equation}
 则可根据$p(x)$抽取一组样本$\{x_1,x_2,\dots,x_N\}$,然后计算$f(x)$在这些样本上的均值
 \begin{equation}
 \hat f=\frac{1}{N}\sum_{i=1}^Nf(x_i)
 \end{equation}
-近似目标期望$\mathbb E[f]$.
+近似目标期望$\mathbbm E[f]$.
 
 对于概率图模型来说,就是如何高效地基于图模型所描述的概率分布来获取样本,从而绕开概率分布.
 
@@ -162,9 +162,9 @@ P(x_i)\propto\prod_{k\in n(i)}m_{ki}(x_i)
 \begin{equation}
 P(A)=\int_Ap(x)dx
 \end{equation}
-若有函数$f:X\rightarrow\mathbb R$,则可计算$f(x)$的期望
+若有函数$f:X\rightarrow\mathbbm R$,则可计算$f(x)$的期望
 \begin{equation}
-p(f)=\mathbb E_p[f(X)]=\int_xf(x)p(x)dx
+p(f)=\mathbbm E_p[f(X)]=\int_xf(x)p(x)dx
 \end{equation}
 MCMC先构造出服从$p$分布的独立同分布随机变量$x_i,x_2,\dots,x_N$,再得到无偏估计
 \begin{equation}

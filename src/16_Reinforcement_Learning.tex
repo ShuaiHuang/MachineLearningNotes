@@ -6,7 +6,7 @@
 
 在对机器做操作的过程中,仅仅能通过操作获得当前反馈,而难以判断最终奖赏的结果,对这个过程进行抽象,便得到了``强化学习''的模型.强化学习任务通常用马尔可夫决策过程(Markov Decision Process, MDP)来描述:机器处于环境$E$中,状态空间为$X$,每个状态$x\in X$为机器对当前环境的描述;机器所采取的动作空间为$A$,每个动作$a\in A$作用在当前状态$x$上,使得状态以概率$P$转移到另一个状态,环境根据``奖赏''(reward)函数$R$反馈给机器一个奖赏.综上,强化学习对应四元组$E=<X,A,P,R>$.需要注意的是,在环境中状态的转移,奖赏的返回是不受机器控制的,机器只能通过选择要执行的动作来影响环境,也只能通过观察转移后的状态和返回的奖赏来感知环境.
 
-机器要做的事情就是在环境中不断尝试而学得一个``策略''(policy)$\pi$,根据这个策略,在状态$x$下就能得知要执行的动作$a=\pi(x)$.一种策略表示是函数$\pi:X\mapsto A$;另一种策略表示是$\pi:X\times A\mapsto \mathbb R$.策略的优劣取决于长期执行这一策略后得到的累积奖赏.在强化学习任务中,学习的目的就是要找到能够使长期累积奖赏最大化的策略.
+机器要做的事情就是在环境中不断尝试而学得一个``策略''(policy)$\pi$,根据这个策略,在状态$x$下就能得知要执行的动作$a=\pi(x)$.一种策略表示是函数$\pi:X\mapsto A$;另一种策略表示是$\pi:X\times A\mapsto \mathbbm R$.策略的优劣取决于长期执行这一策略后得到的累积奖赏.在强化学习任务中,学习的目的就是要找到能够使长期累积奖赏最大化的策略.
 
 强化学习与有监督学习不同之处在于,在强化学习中并没有监督学习中的有标记样本,只有在学习过程最后得到最终结果.因此,强化学习在一定程度上可以看做``延迟标记信息''的监督学习问题.
 
@@ -93,19 +93,19 @@ $$P(k)=\frac{e^\frac{Q(k)}{\tau}}{\sum_{i=1}^Ke^\frac{Q(i)}{\tau}}$$
 
 一般的，函数$f$在概率分布$p$下的期望
 \begin{equation}
-\mathbb E[f]=\int_xp(x)f(x)dx
+\mathbbm E[f]=\int_xp(x)f(x)dx
 \end{equation}
 可通过从概率分布$p$上的采样$\{x_1,x_2,\dots,x_m\}$来估计$f$的期望，即
 \begin{equation}
-\mathbb {\hat E}[f]=\frac{1}{m}\sum_{i=1}^mf(x_i)
+\mathbbm {\hat E}[f]=\frac{1}{m}\sum_{i=1}^mf(x_i)
 \end{equation}
 若引入另一个分布$q$，则函数$f$在概率分布$p$下的期望也可等价地写为
 \begin{equation}
-\mathbb E=\int_x q(x)\frac{p(x)}{q(x)}f(x)dx
+\mathbbm E=\int_x q(x)\frac{p(x)}{q(x)}f(x)dx
 \end{equation}
 上式可以通过在$q$上的采样$\{x_1',x_2',\dots,x_m'\}$估计为
 \begin{equation}
-\mathbb {\hat E}[f]=\frac{1}{m}\sum_{i=1}^m\frac{p(x_i')}{q(x_i')}f(x_i')
+\mathbbm {\hat E}[f]=\frac{1}{m}\sum_{i=1}^m\frac{p(x_i')}{q(x_i')}f(x_i')
 \end{equation}
 .
 
@@ -123,7 +123,7 @@ $$P(k)=\frac{e^\frac{Q(k)}{\tau}}{\sum_{i=1}^Ke^\frac{Q(i)}{\tau}}$$
 
 前面所述的算法都是针对有限状态空间，现实的强化学习任务所面临的状态空间往往是连续的，有无穷多个状态。一个直接的想法就是对状态空间进行离散化，将连续状态空间转化为有限离散状态空间，但是这仍然是一个很难的问题。
 
-事实上，不妨对连续状态空间的值函数进行学习。先**假定状态空间为$n$维实数空间$X=\mathbb R^n$,并且值函数能表达为状态的线性函数**
+事实上，不妨对连续状态空间的值函数进行学习。先**假定状态空间为$n$维实数空间$X=\mathbbm R^n$,并且值函数能表达为状态的线性函数**
 \begin{equation}
 V_{\mathbf \theta}(\mathbf x)=\mathbf\theta^T\mathbf x
 \end{equation}
