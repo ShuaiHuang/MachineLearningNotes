@@ -11,7 +11,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Source: http://en.wikibooks.org/wiki/LaTeX/Hyperlinks %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{hyperref}
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green]{hyperref}
 \usepackage{graphicx}
 \usepackage[english]{babel}
 \usepackage{ctex}
@@ -70,9 +70,6 @@
 % Author
 \author{\textsc{黄帅}
 % \thanks{\mailto{shuaihuang.sjtu@gmail.com}}
-\footnote{\url{https://github.com/ShuaiHuang/MachineLearningNotes}}
-\footnote{\url{http://shuaihuang.github.io/}}
-\footnote{\href{mailto:shuaihuang.sjtu@gmail.com}{shuaihuang.sjtu@gmail.com}}
 }
 
 
@@ -82,7 +79,7 @@
 \mainmatter
 % \include{0_0_dedication}
 \include{0_1_table_of_contents}
-% \include{0_2_preface}
+\include{0_2_preface}
 % \include{0_3_acknowledgements}
 \include{1_Introduction}
 \include{2_Model_Estimation_and_Selection}
